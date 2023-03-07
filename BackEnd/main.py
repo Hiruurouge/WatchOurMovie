@@ -3,7 +3,10 @@ from getMovie import *
 
 app = FastAPI()
 
-@app.get("/ia/predict")
+@app.post("/ia/predict")
 async def predict(preferences: dict):
-
     return recommander_films(preferences)
+
+@app.get("/ia/test")
+async def test():
+    return "ça marche"
