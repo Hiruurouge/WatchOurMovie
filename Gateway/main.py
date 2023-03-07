@@ -5,8 +5,8 @@ import requests
 app = FastAPI()
 
 @app.get("/api/predict")
-async def predict(genres: Set[str]):
+async def predict(user: Set[dict]):
     url:str = ""
-    r = requests.get(url)
+    r = requests.get(url, user)
     content:List[dict] = r.json()
     return content
