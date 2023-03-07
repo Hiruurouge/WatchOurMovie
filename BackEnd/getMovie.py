@@ -100,8 +100,8 @@ def cosine_similarity(a, b):
     norm_a = np.linalg.norm(a)
     norm_b = np.linalg.norm(b)
     return dot_product / (norm_a * norm_b)
-def recommander_films(utilisateur):
-    preferences = utilisateur['preferences']
+
+def recommander_films(preferences):
     films_recommandes = []
     # Collecter tous les films préférés de l'utilisateur
     for genre in preferences['genres']:
@@ -147,5 +147,5 @@ def recommander_films(utilisateur):
     films_recommandes = sorted(similarites_cosinus.keys(), key=lambda x: similarites_cosinus[x], reverse=True)
     return films_recommandes[:5]
 alice = utilisateurs[0]
-films_recommandes = recommander_films(alice)
+films_recommandes = recommander_films(alice['preferences'])
 print(films_recommandes)
