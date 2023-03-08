@@ -1,0 +1,35 @@
+<form [formGroup]="prefForm" (ngSubmit)="onSubmit()">
+    <label>Genres:</label>
+    <div formArrayName="genres">
+      <div *ngFor="let skill of genres.controls; let i=index">
+        <input id="genre-{{ i }}" type="text" [formControlName]="i">
+        <button type="button" (click)="removeGenre(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addGenre()">+ Add another genre</button>
+    </div>
+
+    <label>Realisateurs:</label>
+    <div formArrayName="realisateurs">
+      <div *ngFor="let skill of realisateurs.controls; let i=index">
+        <input id="realisateur-{{ i }}" type="text" [formControlName]="i">
+        <button type="button" (click)="removeRealisateur(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addRealisateur()">+ Add another realisateur</button>
+    </div>
+
+    <label>Maisons de production:</label>
+    <div formArrayName="maisons_de_production">
+      <div *ngFor="let skill of maisons_de_production.controls; let i=index">
+        <input id="maisons_de_production-{{ i }}" type="text" [formControlName]="i">
+        <button type="button" (click)="removeMaisonDeProduction(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addMaisonDeProduction()">+ Add another maisons de production</button>
+    </div>
+   
+    <p>
+      <button type="submit">Submit</button>
+    </p>
+   
+  </form>
+   
+  {{this.prefForm.value | json}}
