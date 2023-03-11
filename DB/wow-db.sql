@@ -75,9 +75,3 @@ CREATE TABLE IF NOT EXISTS product(
     FOREIGN KEY (id_production) REFERENCES production(uid),
     FOREIGN KEY (id_movie) REFERENCES movie(uid)
 );
-CREATE TABLE IF NOT EXISTS made(
-    id_director INT NOT NULL,
-    id_movie INT NOT NULL,
-    FOREIGN KEY (id_director) REFERENCES staff(uid),
-    FOREIGN KEY (id_movie) REFERENCES movie(uid)
-);
