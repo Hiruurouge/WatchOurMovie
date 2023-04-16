@@ -1,8 +1,9 @@
 from sqlalchemy import Column, String, Integer, Date, Float
-from sqlalchemy.orm import Declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base =declarative_base()
+
 class Movie(Base):
     __tablename__="movie"
     uid = Column(Integer, primary_key=True, nullable=False)
