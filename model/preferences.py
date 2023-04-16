@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String,Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from Model.user import User
-from Model.genre import Genre
+from model.user import User
+from model.genre import Genre
 
 Base = declarative_base()
 
