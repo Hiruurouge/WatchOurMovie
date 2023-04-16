@@ -1,15 +1,18 @@
 from sqlalchemy import Column, String,Integer
-from slqalchemy.orm import Declarative_base
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
-class UserBase(Declarative_base):
-    pass 
-class  User(UserBase):
+Base = declarative_base() 
+
+class  User(Base):
     __tablename__="wow_user"
-    uid: Column(Integer,primary_key=True, nullable=False)
-    first_name: Column(String(100),nullable=False)
-    last_name: Column(String(100), nullable=False)
-    email: Column(String(100), nullable=False)
-    age: Column(Integer,nullable=False)
-    genre : Column(String(1),nullable=False)
-    password: Column(String, nullable=False)
+    uid= Column(Integer,primary_key=True, nullable=False)
+    first_name = Column(String(100),nullable=False)
+    last_name = Column(String(100), nullable=False)
+    age = Column(Integer,nullable=False)
+    genre = Column(String(1),nullable=False)
+    group = relationship("Group",cascade="all,delete", backref="User")
+    belong= relationship("Belong", cascade="all,delete", backref="User")
+    visualize= relationship("Visualize", cascade="all,delete", backref="User")
+    preferences = relationship("Preferences", cascade="all,delete", backref="User")
 
