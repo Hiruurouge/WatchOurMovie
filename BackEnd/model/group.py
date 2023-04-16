@@ -1,11 +1,11 @@
 from sqlalchemy import Column, String,Integer, ForeignKey
 from model.user import User
-from sqlalchemy.orm import Declarative_base,relationship
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 
-class GroupBase(Declarative_base):
-    pass
+Base =declarative_base()
     
-class Group(GroupBase):
+class Group(Base):
     __tablename__="wow_group"
     uid = Column(Integer,primary_key=True, nullable=False)
     group_name = Column(String(100),nullable=False)

@@ -1,11 +1,10 @@
-from sqlalchemy.orm import Declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import String, Integer, Column
 
-class StaffBase(Declarative_base):
-    pass
-    
+from sqlalchemy.ext.declarative import declarative_base
+Base =declarative_base()
 
-class Staff(StaffBase):
+class Staff(Base):
     __tablename__="staff"
     uid =Column(Integer,primary_key=True, nullable=False)
     name=  Column(String,nullable=False),
