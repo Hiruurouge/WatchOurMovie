@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from getMovie import *
+from getMovie import recommander_films
 
 app = FastAPI()
 
