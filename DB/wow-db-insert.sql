@@ -51,11 +51,11 @@ INSERT INTO movie (title) VALUES ("Jurassic Park");
 INSERT INTO movie (title) VALUES ("Titanic");
 
 /*Associate a movie to its directors*/
-INSERT INTO work (id_director, id_movie) VALUES (1,1);
-INSERT INTO work (id_director, id_movie) VALUES (2,2);
-INSERT INTO work (id_director, id_movie) VALUES (2,3);
-INSERT INTO work (id_director, id_movie) VALUES (3,4);
-INSERT INTO work (id_director, id_movie) VALUES (4,5);
+INSERT INTO work (id_staff, id_movie) VALUES (1,1);
+INSERT INTO work (id_staff, id_movie) VALUES (2,2);
+INSERT INTO work (id_staff, id_movie) VALUES (2,3);
+INSERT INTO work (id_staff, id_movie) VALUES (3,4);
+INSERT INTO work (id_staff, id_movie) VALUES (4,5);
 
 /*Associate movie to its producer*/
 INSERT INTO product (id_production,id_movie) VALUE(3,1);
