@@ -1,6 +1,6 @@
 from sqlalchemy import Column,Integer, ForeignKey
-from model.user import User
-from model.group import Group
+from Model.user import User
+from Model.group import Group
 
 from sqlalchemy.ext.declarative import declarative_base
 

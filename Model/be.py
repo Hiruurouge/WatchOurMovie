@@ -1,6 +1,6 @@
 from sqlalchemy import Column,Integer, ForeignKey
-from model.movie import Movie
-from model.genre import Genre
+from Model.movie import Movie
+from Model.genre import Genre
 from sqlalchemy.ext.declarative import declarative_base
 
 Base =declarative_base()

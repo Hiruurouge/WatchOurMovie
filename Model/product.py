@@ -1,7 +1,7 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import Integer, ForeignKey,Column
-from model.production import Production
-from model.movie import Movie
+from Model.production import Production
+from Model.movie import Movie
 
 from sqlalchemy.ext.declarative import declarative_base
 

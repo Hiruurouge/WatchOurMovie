@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, ForeignKey, Column
-from model.user import User
-from model.movie import Movie
+from Model.user import User
+from Model.movie import Movie
 from sqlalchemy.ext.declarative import declarative_base
 
 Base =declarative_base()
