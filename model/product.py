@@ -1,4 +1,3 @@
-from sqlalchemy.orm import relationship
 from sqlalchemy import Integer, ForeignKey,Column
 from sqlalchemy.orm import backref, relationship
 from model.production import Production
