@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  db:
+    build: ./db
+    env_file:
+      - ./db/.env
+    networks:
+      backend: 
+        ipv4_address: "10.5.0.2"
+  
+
+networks:
+  backend: 
+    driver: bridge
+    ipam: 
+      config:
+        - subnet: "10.5.0.0/27"
+          gateway: "10.5.0.1"
