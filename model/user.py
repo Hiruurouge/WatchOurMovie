@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String,Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from model.auth import Auth
 
 Base = declarative_base() 
@@ -12,8 +12,4 @@ class  User(Base):
     last_name = Column(String(100), nullable=False)
     age = Column(Integer,nullable=False)
     genre = Column(String(1),nullable=False)
-    group = relationship("Group",cascade="all,delete", backref="User")
-    belong= relationship("Belong", cascade="all,delete", backref="User")
-    visualize= relationship("Visualize", cascade="all,delete", backref="User")
-    preferences = relationship("Preferences", cascade="all,delete", backref="User")
-
+    auth= relationship(Auth, backref=backref("User", cascade="all,delete"))

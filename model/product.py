@@ -10,6 +10,7 @@ class Product(Base):
     __tablename__="product"
     id_production = Column(Integer,ForeignKey(Production.uid), primary_key=True, nullable=False)
     id_movie = Column(Integer, ForeignKey(Movie.uid), primary_key=True, nullable=False)
-    movie = relationship(Movie, backref=backref("product", cascade="all,delete"))
+    movie = relationship(Movie, backref=backref("Product", cascade="all,delete"))
+    production = relationship(Production, backref=backref("Production", cascade="all,delete"))
 
     

@@ -8,6 +8,17 @@ services:
     networks:
       backend: 
         ipv4_address: "10.5.0.2"
+
+  user-service:
+    build: ./user-service
+    ports:
+      - 3213:3213
+    volumes: 
+      - ./model:/code/model
+      - ./schema:/code/schema
+    networks:
+      backend: 
+        ipv4_address: "10.5.0.3"
   
 
 networks:

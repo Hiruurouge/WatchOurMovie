@@ -7,5 +7,6 @@ class Production(Base):
     __tablename__="production"
     uid= Column(Integer,primary_key=True, nullable=False)
     name= Column(String,nullable=False)
-    product =relationship("Product", cascade="all,delete",backref="Production")
+    
+    
     
