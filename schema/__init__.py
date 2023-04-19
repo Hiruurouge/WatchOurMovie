@@ -1,4 +1,4 @@
-from .auth import Auth, AuthBase
+from .auth import Auth, AuthId, AuthCredentials
 from .belong import Belong
 from .be import Be
 from .genre import Genre
