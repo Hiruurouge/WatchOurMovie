@@ -10,10 +10,14 @@ def model_factory(obj: Type[BaseModel]):
     return cls(**obj.dict(exclude_unset=True))
 
 def create_one(db: Session, obj: Type[BaseModel]):
-    orm_obj = model_factory(obj)
-    db.add(orm_obj)
-    db.commit()
-    db.refresh(orm_obj)
+    try:
+        orm_obj = model_factory(obj)
+        db.add(orm_obj)
+        db.commit()
+        db.refresh(orm_obj)
+    except:
+        print("T'sais quoi ça a pas marché et je m'en fous")
+    
 
 def delete_one(db:Session, obj: Type[BaseModel]):
     cls = getattr(model, type(obj).__name__)

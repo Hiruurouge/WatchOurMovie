@@ -50,8 +50,6 @@ def get_and_put_movie_and_all(db: Session, title: str) -> None:
         product = Product(id_production=prod.uid, id_movie=id)
         create_one(db, product)
     for staff in data["staffs"]:
-        create_one(db, prod)
+        create_one(db, staff)
         work = Work(id_staff=staff.uid, id_movie=id)
         create_one(db, work)
-
-get_and_put_movie_and_all("La La Land")
