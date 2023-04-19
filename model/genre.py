@@ -9,5 +9,3 @@ class Genre(Base):
     __tablename__="genre"
     uid = Column(Integer, primary_key=True ,nullable=False)
     name= Column(String, nullable=False)
-    be =relationship("Be", cascade="all,delete", backref="Genre")
-    preferences = relationship("Preferences", cascade="all,delete", backref="Genre")

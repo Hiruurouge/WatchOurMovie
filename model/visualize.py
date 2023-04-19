@@ -10,3 +10,4 @@ class Visualize(Base):
     id_user = Column(Integer, ForeignKey(User.uid), primary_key=True,nullable=False)
     id_movie = Column(Integer, ForeignKey(Movie.uid),primary_key=True, nullable=False)
     movie = relationship(Movie, backref=backref("visualize", cascade="all,delete"))
+    user= relationship(User, backref=backref("Visualize", cascade="all,delete"))

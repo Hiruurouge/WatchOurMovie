@@ -1,7 +1,11 @@
 from pydantic import BaseModel
 
-class AuthBase(BaseModel): 
+class AuthCredentials(BaseModel): 
     email: str
-
-class Auth(AuthBase):
     password:str
+    
+class AuthId(BaseModel):
+    uid:int
+
+class Auth(AuthCredentials):
+    uid:int
