@@ -1,1 +1,0 @@
-from .tmdb import get_movie
