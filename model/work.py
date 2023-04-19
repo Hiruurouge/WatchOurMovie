@@ -10,3 +10,4 @@ class Work(Base):
     id_user = Column(Integer, ForeignKey(User.uid), primary_key=True, nullable=False)
     id_movie = Column(Integer, ForeignKey(Movie.uid),primary_key=True, nullable=False)
     movie = relationship(Movie, backref=backref("work", cascade="all,delete"))
+    user= relationship(User, backref=backref("Work", cascade="all,delete"))

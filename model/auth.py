@@ -9,4 +9,3 @@ class Auth(Base):
     uid=Column(Integer, primary_key=True, nullable=False)
     email= Column(String(100), unique=True, nullable=False)
     password=Column(String,nullable=False)
-    user=relationship("User", cascade="all,delete", backref="Auth")

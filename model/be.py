@@ -10,4 +10,5 @@ class Be(Base):
     __tablename__="be"
     id_genre = Column(Integer, ForeignKey(Genre.uid),primary_key=True, nullable=False)
     id_movie = Column(Integer, ForeignKey(Movie.uid),primary_key=True,nullable=False)
-    movie = relationship(Movie, backref=backref("be", cascade="all,delete"))
+    movie = relationship(Movie, backref=backref("Be", cascade="all,delete"))
+    genre = relationship(Genre, backref=backref("Be", cascade="all,delete"))
