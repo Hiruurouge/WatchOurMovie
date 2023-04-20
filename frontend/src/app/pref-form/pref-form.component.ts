@@ -1,3 +1,4 @@
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 
@@ -9,7 +10,9 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 export class PrefFormComponent {
   prefForm: FormGroup;
 
-  constructor(private fb:FormBuilder) {
+  data: string = "";
+
+  constructor(private fb:FormBuilder, private http: HttpClient) {
     this.prefForm = this.fb.group({
       genres: this.fb.array([
         this.fb.control('')
@@ -60,8 +63,12 @@ export class PrefFormComponent {
     this.maisons_de_production.removeAt(i);
   }
 
-  onSubmit() {
+  async onSubmit() {
     console.log(this.prefForm.value);
+    await this.http.get<HttpResponse<string>>("http://localhost:3212/api/ia/")
+    .subscribe((rep) => {
+      this.data = JSON.stringify(rep);
+    })
   }
 
   itemIdentity(index: number, item: Object) {
