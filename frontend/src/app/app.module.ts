@@ -6,16 +6,24 @@ import { AppComponent } from './app.component';
 import { PrefFormComponent } from './pref-form/pref-form.component';
 import { MenuComponent } from './menu/menu.component';
 import { FooterComponent } from './footer/footer.component';
+import { LoginComponent } from './pages/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RegisterComponent } from './pages/register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PrefFormComponent,
     MenuComponent,
-    FooterComponent
+    FooterComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     AppRoutingModule
   ],
