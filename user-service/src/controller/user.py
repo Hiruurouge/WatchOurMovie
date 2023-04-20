@@ -13,7 +13,7 @@ def create_user(db:Session, user: User)->bool:
 
 
 def delete_user(db:Session, user: UserBase):
-    db.query(model.User).filter(model.User.uid==user.uid).delete();
+    db.query(model.User).filter(model.User.uid==user.uid).delete()
     db.commit()
 
 def update_user(db:Session, user: User):
@@ -33,7 +33,7 @@ def update_user(db:Session, user: User):
 
 def get_user(db:Session, user: UserBase):
     db_user=db.query(model.User).filter(model.User.uid==user.uid).first()
-    return db_user;
+    return db_user
 
 def get_user_by_group(db:Session, uid:int):
     return db.query(model.User).join(model.Belong).filter(model.Belong.id_group==uid).all()

@@ -4,9 +4,19 @@ from .auth import auth
 from .user import user
 from .tmdb import tmdb
 from .recommendation import recommendation
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 subapi = FastAPI()
+origins = ["*"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 subapi.include_router(auth.router)
 subapi.include_router(recommendation.router)
