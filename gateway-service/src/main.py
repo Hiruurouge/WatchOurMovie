@@ -5,6 +5,8 @@ from .auth import auth
 from .user import user
 from .tmdb import tmdb
 from .recommendation import recommendation
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 subapi = FastAPI()
 
