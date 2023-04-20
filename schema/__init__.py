@@ -12,3 +12,4 @@ from .user import User,UserBase
 from .visualize import Visualize
 from .work import Work
 from .token import Token,TokenData
+from .prediction import Prediction
