@@ -1,18 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from typing import Annotated
-from datetime import timedelta
+from fastapi import FastAPI, Depends, status, HTTPException
+from sqlalchemy.orm import Session
+from schema import Auth,AuthCredentials, AuthId
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker,Session
+from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 from . import controller as ctrl
-from schema import AuthCredentials, Auth,AuthId, TokenData, Token
 
 load_dotenv()
 
 MYSQL_DATABASE_URL= os.getenv('MYSQL_DATABASE_URL')
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 engine = create_engine(MYSQL_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -26,44 +23,31 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/signup")
+@app.post("/", status_code=201)
 def create_user(auth: AuthCredentials, db:Session=Depends(get_db)):
-    ctrl.create_user(auth,db)
+    result = ctrl.create_user(auth,db)
+    db.close()
+    return result
+
+@app.get("/")
+def get_user(uid:int, db:Session= Depends(get_db)):
+    auth = AuthId(uid=uid)
+    result = ctrl.get_user(auth,db)
+    db.close()
+    return result
+
+@app.patch("/")
+def update_user(auth:Auth, db:Session=Depends(get_db)):
+    ctrl.update_user(auth, db)
     db.close()
 
-@app.delete("/auth")
-def delete_user(token: Annotated[TokenData, Depends(ctrl.get_current_user)], db:Session=Depends(get_db)):
-    auth = AuthId(uid = token.uid)
+@app.delete("/")
+def delete_user(auth:AuthId, db:Session=Depends(get_db)):
     ctrl.delete_user(auth,db)
     db.close()
 
-@app.patch("/auth")
-def update_user(credentials: AuthCredentials ,token: Annotated[TokenData, Depends(ctrl.get_current_user)], db:Session=Depends(get_db)):
-    auth= Auth(email=credentials.email, password=credentials.password, uid= token.uid)
-    ctrl.update_user(auth,db)
+@app.post("/authenticate")
+def authenticate_user(auth: AuthCredentials, db:Session=Depends(get_db)):
+    result = ctrl.authenticate_user(auth,db)
     db.close()
-
-@app.get("/auth")
-def get_user(token: Annotated[TokenData, Depends(ctrl.get_current_user)], db:Session=Depends(get_db)):
-    auth = AuthId(uid=token.uid)
-    return ctrl.get_user(auth,db)
-
-@app.post("/login")
-def authenticate_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db:Session= Depends(get_db)):
-    try:
-        auth = AuthCredentials(email= form_data.username, password= form_data.password)
-        user = ctrl.authenticate_user(auth,db)
-    except: 
-        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail= "Invalid credentials",headers={"WWW-Authenticate": "Bearer"})
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = ctrl.create_access_token(data={"uid": user.uid}, expires_delta=access_token_expires)
-    return Token(access_token=access_token,token_type="Bearer")
-
-@app.get("/hash")
-def get_hashed_password(password:str):
-    hashed = ctrl.get_password_hash(password)
-    return hashed
-
-@app.post("/token")
-def decode_token(token:TokenData = Depends(ctrl.get_current_user)):
-    return token
+    return result

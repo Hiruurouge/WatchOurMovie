@@ -12,6 +12,6 @@ COPY ./src /code/src
 COPY .env /code
 
 # Launch Uvicorn Serveur
-CMD ["uvicorn", "src.main:app","--host","0.0.0.0", "--port", "3214"]
+CMD ["uvicorn", "src.main:app","--host","0.0.0.0", "--port", "3212"]
 
-EXPOSE 3214
+EXPOSE 3212

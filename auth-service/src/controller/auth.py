@@ -1,24 +1,25 @@
 import schema
 import model
-from .token import create_access_token, verify_password
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from passlib.context import CryptContext
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
 
 def create_user(auth: schema.AuthCredentials,db:Session):
     db_auth = model.Auth(email= auth.email, password = auth.password)
     db.add(db_auth)
     db.commit()
     db.refresh(db_auth)
-
-def get_user(user: schema.AuthId, db:Session):
-    db_user =  db.query(model.Auth).filter(model.Auth.uid==user.uid).first()
-    return db_user
+    return db_auth.uid
 
 def delete_user(auth: schema.AuthId, db: Session):
     db.query(model.Auth).filter(model.Auth.uid==auth.uid).delete()
     db.commit()
+
 
 def update_user(user: schema.Auth, db:Session):
     db_user = db.query(model.Auth).filter(model.Auth.uid==user.uid).first()
@@ -33,6 +34,10 @@ def update_user(user: schema.Auth, db:Session):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+    return db_user
+
+def get_user(user: schema.AuthId, db:Session):
+    db_user =  db.query(model.Auth).filter(model.Auth.uid==user.uid).first()
     return db_user
 
 def authenticate_user(user: schema.AuthCredentials, db:Session):

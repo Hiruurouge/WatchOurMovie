@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3.3'
 
 services:
   db:
@@ -21,26 +21,40 @@ services:
     networks:
       backend: 
         ipv4_address: "10.5.0.3"
-  auth-service:
-    build: ./auth-service
+        
+  gateway-service:
+    build: ./gateway-service
     ports:
       - 3212:3212
     volumes:
-    - ./model:/code/model
-    - ./schema:/code/schema
+      - ./model:/code/model
+      - ./schema:/code/schema
     networks:
       backend:
         ipv4_address: "10.5.0.4"
-  tmdb:
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - 3214:3214
+    volumes: 
+      - ./model:/code/model
+      - ./schema:/code/schema
+    networks:
+      backend:
+        ipv4_address: "10.5.0.5"
+      
+  tmdb-service:
     build: ./tmdb
     ports:
       - 3310:3213
     volumes:
-    - ./model:/code/model
-    - ./schema:/code/schema
+      - ./model:/code/model
+      - ./schema:/code/schema
     networks:
       backend:
         ipv4_address: "10.5.0.10"
+
 
 networks:
   backend: 
