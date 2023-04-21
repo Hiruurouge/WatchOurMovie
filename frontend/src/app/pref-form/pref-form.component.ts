@@ -1,6 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-pref-form',
@@ -12,7 +13,7 @@ export class PrefFormComponent {
 
   data: string = "";
 
-  constructor(private fb:FormBuilder, private http: HttpClient) {
+  constructor(private fb:FormBuilder, private http: HttpClient, private auth: AuthService) {
     this.prefForm = this.fb.group({
       genres: this.fb.array([
         this.fb.control('')
@@ -64,8 +65,18 @@ export class PrefFormComponent {
   }
 
   async onSubmit() {
-    console.log(this.prefForm.value);
-    await this.http.get<HttpResponse<string>>("http://localhost:3212/api/ia/")
+    console.log(this.auth.getToken())
+
+    const headerDict = {
+      'Accept': '*/*',
+      'Authorized': 'Bearer ' + this.auth.getAccessToken()
+    }
+    
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(headerDict), 
+    };
+    
+    await this.http.get<HttpResponse<string>>("http://localhost:3212/api/ia/", requestOptions)
     .subscribe((rep) => {
       this.data = JSON.stringify(rep);
     })

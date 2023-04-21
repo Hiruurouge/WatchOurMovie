@@ -10,10 +10,19 @@ export class AuthService {
 
   setToken(token: { accessToken: string, tokenType: string }) {
     this.token = token;
-    console.log(this.token)
+    console.log(this.token);
+    sessionStorage.setItem("accessToken", token.accessToken);
   }
 
   getToken() {
     return this.token;
+  }
+
+  getAccessToken() {
+    if (this.token.accessToken == " ") {
+      return sessionStorage.getItem("accessToken")
+    } else {
+      return this.token.accessToken
+    }
   }
 }
