@@ -22,6 +22,6 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/tmdb/movie")
+@app.post("/tmdb/movie")
 async def put_tmdb_movie_cast_prod_in_db(title: str, db: Session=Depends(get_db)):
     get_and_put_movie_and_all(db,title)
