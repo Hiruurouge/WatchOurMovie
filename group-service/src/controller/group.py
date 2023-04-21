@@ -9,7 +9,7 @@ def create_group(group:Group, db:Session):
     db.commit()
     db.refresh(db_group)
     belong= Belong(id_group=db_group.uid, id_user=db_group.owner)
-    add_to_group(belong,db)
+    add_to_group([belong],db)
     return db_group.uid
 
 def delete_group(group: GroupBase, db:Session):
