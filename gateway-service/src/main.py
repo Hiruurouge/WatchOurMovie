@@ -6,6 +6,8 @@ from .tmdb import tmdb
 from .recommendation import recommendation
 from fastapi.middleware.cors import CORSMiddleware
 
+from .group import group
+
 app = FastAPI()
 subapi = FastAPI()
 origins = ["*"]
@@ -21,5 +23,8 @@ app.add_middleware(
 subapi.include_router(auth.router)
 subapi.include_router(recommendation.router)
 subapi.include_router(user.router)
+
+subapi.include_router(group.router)
 subapi.include_router(tmdb.router)
+
 app.mount("/api", subapi)
