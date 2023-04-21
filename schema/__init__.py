@@ -2,7 +2,7 @@ from .auth import Auth, AuthId, AuthCredentials
 from .belong import Belong
 from .be import Be
 from .genre import Genre
-from .group import Group
+from .group import Group,GroupBase
 from .movie import Movie
 from .preferences import Preferences
 from .production import Production
