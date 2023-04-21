@@ -26,7 +26,7 @@ def create_user(user: User, token :Annotated[TokenData,Depends(get_current_user)
 @router.get('/')
 def get_user(token: Annotated[TokenData,Depends(get_current_user)]):
     result = requests.get(USER_URL, params={'uid': token.uid})
-    return result.status_code 
+    return result.json()
 
 @router.patch ('/')
 def update_user(user: User,token: Annotated[TokenData, Depends(get_current_user)]):
