@@ -1,6 +1,6 @@
 from fastapi import APIRouter,Depends
 from ..auth.controller import  get_current_user
-from schema import User, TokenData, UserBase
+from schema import User, TokenData, UserBase, AuthId
 from typing import Annotated
 import requests
 import os
@@ -10,18 +10,13 @@ load_dotenv()
 USER_IP=os.getenv("USER_IP")
 USER_PORT = os.getenv("USER_PORT")
 USER_URL = f'http://{USER_IP}:{USER_PORT}/user'
-
+AUTH_URL = os.getenv("AUTH_URL")
 router = APIRouter(
     prefix="/user",
     tags=["user"] 
 )
 
-@router.post('/')
-def create_user(user: User, token :Annotated[TokenData,Depends(get_current_user)]):
-    user.uid = token.uid
-    result = requests.post(USER_URL, data=user.json())
-    return result.status_code
-    
+
 
 @router.get('/')
 def get_user(token: Annotated[TokenData,Depends(get_current_user)]):
@@ -35,9 +30,9 @@ def update_user(user: User,token: Annotated[TokenData, Depends(get_current_user)
     return result.status_code
 
 @router.delete('/')
-def update_user(token:Annotated[TokenData, Depends(get_current_user)]):
-    user= UserBase(uid=token.uid)
-    result = requests.delete(USER_URL, data=user.json())
+def delete_user(token:Annotated[TokenData, Depends(get_current_user)]):
+    user= AuthId(uid=token.uid)
+    result = requests.delete(user, data=user.json())
     return result.status_code
 
 
