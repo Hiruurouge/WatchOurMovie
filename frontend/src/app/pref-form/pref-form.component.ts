@@ -11,6 +11,8 @@ import { AuthService } from '../services/auth.service';
 export class PrefFormComponent {
   prefForm: FormGroup;
 
+  clicked: boolean = false;
+
   data: string = "";
 
   constructor(private fb:FormBuilder, private http: HttpClient, private auth: AuthService) {
@@ -65,11 +67,9 @@ export class PrefFormComponent {
   }
 
   async onSubmit() {
-    console.log(this.auth.getToken())
-
     const headerDict = {
       'Accept': '*/*',
-      'Authorized': 'Bearer ' + this.auth.getAccessToken()
+      'Authorization': 'Bearer ' + this.auth.getAccessToken()
     }
     
     const requestOptions = {                                                                                                                                                                                 
