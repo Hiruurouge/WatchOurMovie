@@ -32,7 +32,7 @@ def update_user(user: User,token: Annotated[TokenData, Depends(get_current_user)
 @router.delete('/')
 def delete_user(token:Annotated[TokenData, Depends(get_current_user)]):
     user= AuthId(uid=token.uid)
-    result = requests.delete(user, data=user.json())
+    result = requests.delete(AUTH_URL, data=user.json())
     return result.status_code
 
 
