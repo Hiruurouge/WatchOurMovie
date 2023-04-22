@@ -1,4 +1,5 @@
-<form [formGroup]="prefForm" (ngSubmit)="onSubmit()">
+ <div>
+  <form [formGroup]="prefForm" (ngSubmit)="onSubmit()">
     <label>Genres:</label>
     <div formArrayName="genres">
       <div *ngFor="let skill of genres.controls; let i=index">
@@ -25,11 +26,23 @@
       </div>
       <button type="button" (click)="addMaisonDeProduction()">+ Add another maisons de production</button>
     </div>
-   
+  
     <p>
-      <button type="submit">Submit</button>
+      <button (click)="clicked = true; data = ''" type="submit">Submit</button>
     </p>
-   
+    
   </form>
-   
-  {{this.prefForm.value | json}}
+
+  <section class="response" *ngIf="data != '' || clicked">
+    <div class="response-container">
+      <div *ngIf="clicked && data == ''">
+        <div class="filler"></div>
+        <div class="my-img-container">
+        </div>
+      </div>
+      <p *ngIf="data != ''">
+        {{data}}
+      </p>
+    </div>
+  </section>
+</div> 

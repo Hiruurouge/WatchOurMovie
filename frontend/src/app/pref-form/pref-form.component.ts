@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-pref-form',
@@ -9,7 +11,11 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 export class PrefFormComponent {
   prefForm: FormGroup;
 
-  constructor(private fb:FormBuilder) {
+  clicked: boolean = false;
+
+  data: string = "";
+
+  constructor(private fb:FormBuilder, private http: HttpClient, private auth: AuthService) {
     this.prefForm = this.fb.group({
       genres: this.fb.array([
         this.fb.control('')
@@ -60,8 +66,20 @@ export class PrefFormComponent {
     this.maisons_de_production.removeAt(i);
   }
 
-  onSubmit() {
-    console.log(this.prefForm.value);
+  async onSubmit() {
+    const headerDict = {
+      'Accept': '*/*',
+      'Authorization': 'Bearer ' + this.auth.getAccessToken()
+    }
+    
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(headerDict), 
+    };
+    
+    await this.http.get<HttpResponse<string>>("http://localhost:3212/api/ia/", requestOptions)
+    .subscribe((rep) => {
+      this.data = JSON.stringify(rep);
+    })
   }
 
   itemIdentity(index: number, item: Object) {
