@@ -51,7 +51,7 @@ def update_group(group:Group, token :Annotated[TokenData,Depends(get_current_use
 
 @router.post("/")
 def create_group(group:Group, token: Annotated[TokenData,Depends(get_current_user)]):
-    group.uid= token.uid
+    group.owner= token.uid
     response = requests.post(GROUP_URL,data= group.json())
     response.raise_for_status()
     return response.status_code
