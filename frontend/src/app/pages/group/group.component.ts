@@ -11,6 +11,8 @@ import {UserService} from "../../services/user.service";
 export class GroupComponent implements OnInit {
 
   userGroups: any[] = [];
+  selectedGroup : any
+  isEditModalOpen:boolean=false
   newGroupName: string = '';
   newGroupErrorMessage: string = '';
   currentUser: UserI = <UserI>{};
@@ -70,15 +72,29 @@ export class GroupComponent implements OnInit {
     );
   }
 
-  updateGroup(group: any): void {
-    this.groupService.updateGroup(group).subscribe(
+  updateGroup(): void {
+    const updatedGroup = {
+      owner: this.selectedGroup.owner,
+      uid: this.selectedGroup.uid,
+      group_name: this.newGroupName
+    }
+    this.groupService.updateGroup(updatedGroup).subscribe(
       () => {
         console.log('Group updated successfully.');
+        this.groupService.getUserGroups().subscribe(
+          (groups: any[]) => {
+            this.userGroups = groups;
+          },
+          (error: any) => {
+            console.log('Error retrieving user groups:', error);
+          }
+        );
       },
       (error: any) => {
         console.log('Error updating group:', error);
       }
     );
+    this.closeEditModal()
   }
 
   // Définir une variable pour suivre l'état de la fenêtre modale
@@ -87,6 +103,13 @@ export class GroupComponent implements OnInit {
 // Fonction pour ouvrir la fenêtre modale
   openModal() {
     this.isModalOpen = true;
+  }
+  openEditModal(group: any) {
+    this.isEditModalOpen = true;
+    this.selectedGroup = group
+  }
+  closeEditModal() {
+    this.isEditModalOpen = false;
   }
 
 // Fonction pour fermer la fenêtre modale

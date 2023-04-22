@@ -63,7 +63,18 @@ export class GroupService {
   }
 
   updateGroup(group: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${group.id}`, group);
+    const accessToken = this.authService.getAccessToken();
+    const headers = {
+      'accept': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+    const body = {
+      'uid': group.uid,
+      'group_name': group.group_name,
+      'owner': group.owner
+    };
+    return this.http.patch<any>("http://localhost:3212/api/group/", body, { headers });
   }
 
 }
