@@ -30,7 +30,7 @@ def delete_group(group:GroupBase, token :Annotated[TokenData,Depends(get_current
     group_response = requests.get(GROUP_URL,params={"uid":group.uid})
     group_response.raise_for_status()
     group_dict =group_response.json()
-    if group_dict['uid'] ==token.uid: 
+    if group_dict['owner'] ==int(token.uid): 
         response = requests.delete(GROUP_URL,data=group.json())
         response.raise_for_status()
         return response.status_code
@@ -51,11 +51,10 @@ def update_group(group:Group, token :Annotated[TokenData,Depends(get_current_use
 
 @router.post("/")
 def create_group(group:Group, token: Annotated[TokenData,Depends(get_current_user)]):
-    group.uid= token.uid
+    group.owner= token.uid
     response = requests.post(GROUP_URL,data= group.json())
     response.raise_for_status()
-    return response.status_code
-
+    return response.json()
 @router.get("/users")
 def get_users_by_group(uid:int, token: Annotated[TokenData,Depends(get_current_user)]):
     users_response = requests.get(f"{GROUP_URL}/users" ,params={"uid":uid}) 
