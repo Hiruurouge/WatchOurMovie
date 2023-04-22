@@ -19,16 +19,25 @@
   </div>
   <div class="modal-background" [hidden]="!isEditModalOpen" (click)="closeEditModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
-      <h2>Créer un nouveau groupe</h2>
+      <h2>Update Group</h2>
       <form (submit)="updateGroup()">
         <div>
-          <label>Nom du groupe:</label>
+          <label>New Name</label>
           <input type="text" [(ngModel)]="newGroupName" name="groupName">
         </div>
-        <button  type="submit">Create Group</button>
+        <button  type="submit">Update Group</button>
       </form>
     </div>
   </div>
+  <div class="modal-background" [hidden]="!isMembersModalOpen"  (click)="closeMembersModal()">
+    <div class="modal-container" (click)="stopPropagation($event)">
+      <h2>Membres du groupe "{{selectedGroup.group_name}}"</h2>
+      <ul>
+        <li *ngFor="let member of members">{{member.first_name}} {{member.last_name}}</li>
+      </ul>
+    </div>
+  </div>
+
   <h1>Mes groupes</h1>
   <div class="card-container">
     <div class="card" *ngFor="let group of userGroups">
@@ -39,6 +48,7 @@
         <h2 class="card-title">{{ group.group_name }}</h2>
         <div class="card-actions">
           <button *ngIf="group.owner === currentUser.uid" (click)="openEditModal(group)">Modifier</button>
+          <button (click)="getGroupMembers(group)" >Members</button>
           <button *ngIf="group.owner === currentUser.uid" (click)="deleteGroup(group)">Supprimer</button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { GroupService } from './../../services/group.service';
-import {UserI} from "../../interface/wom";
+import {GroupI, UserI} from "../../interface/wom";
 import {UserService} from "../../services/user.service";
 
 @Component({
@@ -11,8 +11,10 @@ import {UserService} from "../../services/user.service";
 export class GroupComponent implements OnInit {
 
   userGroups: any[] = [];
-  selectedGroup : any
+  members:any[]=[]
+  selectedGroup : GroupI = <GroupI>{}
   isEditModalOpen:boolean=false
+  isMembersModalOpen:boolean=false
   newGroupName: string = '';
   newGroupErrorMessage: string = '';
   currentUser: UserI = <UserI>{};
@@ -121,6 +123,17 @@ export class GroupComponent implements OnInit {
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
   }
-
-
+getGroupMembers(group: any)
+{
+  console.log(group)
+  this.groupService.getGroupMembers(group).subscribe((res)=>{
+    this.members=res
+    this.selectedGroup=group
+    this.isMembersModalOpen = true
+  })
+}
+closeMembersModal()
+{
+  this.isMembersModalOpen =false
+}
 }
