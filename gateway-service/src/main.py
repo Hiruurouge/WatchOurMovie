@@ -5,6 +5,7 @@ from .auth import auth
 from .user import user
 from .tmdb import tmdb
 from .recommendation import recommendation
+from .preference import preference
 from fastapi.middleware.cors import CORSMiddleware
 
 from .group import group
@@ -23,7 +24,7 @@ app.add_middleware(
 subapi.include_router(auth.router)
 subapi.include_router(recommendation.router)
 subapi.include_router(user.router)
-
+subapi.include_router(preference.router)
 subapi.include_router(group.router)
 subapi.include_router(tmdb.router)
 

@@ -1,7 +1,7 @@
 from .auth import Auth, AuthId, AuthCredentials
 from .belong import Belong
 from .be import Be
-from .genre import Genre
+from .genre import Genre, GenreBase
 from .group import Group,GroupBase
 from .movie import Movie
 from .preferences import Preferences

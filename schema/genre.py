@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
-class Genre(BaseModel):
+class GenreBase(BaseModel):
     uid:int
+class Genre(GenreBase):
     name:str
