@@ -68,23 +68,3 @@ export class GroupService {
 
 }
 
-/*@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-
-  constructor(private authService: AuthService) { }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authToken = this.authService.getToken();
-    if (authToken) {
-      console.log(authToken)
-      const authRequest = request.clone({
-        headers: new HttpHeaders({
-          'Authorization': `Bearer ${authToken.accessToken}`
-        })
-      });
-      return next.handle(authRequest);
-    }
-    return next.handle(request);
-  }
-
-}*/

@@ -41,8 +41,15 @@ export class GroupComponent implements OnInit {
         this.userGroups.push(group);
         this.newGroupName = '';
         this.newGroupErrorMessage = '';
-        this.changeDetectorRef.detectChanges();
-
+        this.groupService.getUserGroups().subscribe(
+          (groups: any[]) => {
+            this.userGroups = groups;
+          },
+          (error: any) => {
+            console.log('Error retrieving user groups:', error);
+          }
+        );
+        this.isModalOpen=false
       },
       (error: any) => {
         alert('Error creating group:'+ error);

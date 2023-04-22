@@ -1,0 +1,36 @@
+<h2>My Genre Preferences</h2>
+
+<button class="btn btn-primary" style="margin-left: 5%" (click)="openModal()">Add</button>
+<br>
+<br>
+<div class="card-container">
+  <div class="card" *ngFor="let genre of genres">
+    <img class="card-image" src="https://robohash.org/{{genre.name}}" alt="{{genre.name}} image">
+    <div class="card-content">
+      <h5 class="card-title">{{genre.name}}</h5>
+      <div class="card-actions">
+        <button class="btn btn-danger" (click)="deleteGenrePreference(genre)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-background" [hidden]="!isModalOpen" (click)="closeModal()">
+  <div class="modal-container" (click)="stopPropagation($event)">
+    <h2>Choose a genre</h2>
+    <form>
+      <div class="form-group">
+        <label for="genreSelect">Genres:</label>
+        <select class="form-control" id="genreSelect" (change)="onGenreSelect($event)">
+          <option value="" disabled selected>Choose a genre</option>
+          <option *ngFor="let genre of genresList" [ngValue]="genre">{{ genre.name }}</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="addGenrePreference()">Add</button>
+      </div>
+    </form>
+  </div>
+</div>

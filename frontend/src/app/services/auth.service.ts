@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,8 @@ export class AuthService {
     } else {
       return this.token.accessToken
     }
+  }
+  getAccessTokenObservable(): Observable<string> {
+    return this.token.accessToken as unknown as Observable<string>
   }
 }

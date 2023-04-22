@@ -10,3 +10,7 @@ export interface GroupI {
   group_name:string
   owner:number
 }
+export interface GenreI {
+  uid: number
+  name:string
+}

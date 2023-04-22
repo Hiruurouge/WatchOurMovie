@@ -15,7 +15,9 @@ import {HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserProfileUpdateComponent } from './pages/user-profile-update/user-profile-update.component';
 import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 import { NavbarComponent } from './pages/navbar/navbar.component';
+import { GenrePreferenceComponent } from './pages/genre-preference/genre-preference.component';
 //import { TokenInterceptor } from '././services/group.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,8 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
     GroupComponent,
     UserProfileUpdateComponent,
     UserProfileComponent,
-    NavbarComponent
+    NavbarComponent,
+    GenrePreferenceComponent
   ],
   imports: [
     BrowserModule,
