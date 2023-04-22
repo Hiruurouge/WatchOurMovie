@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient, private userService: AuthService) { }
+  constructor(private http: HttpClient, private userService: AuthService,private  router:Router) { }
 
   onSubmit() {
     const formData = new FormData();
@@ -23,6 +24,7 @@ export class LoginComponent {
           const accessToken = response.access_token;
           const tokenType = response.token_type;
           this.userService.setToken({ accessToken, tokenType });
+          this.router.navigate(['/group'])
         },
         error: (error) => {
           console.error(error);

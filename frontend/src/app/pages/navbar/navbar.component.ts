@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {OnInit} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../services/auth.service";
@@ -11,17 +11,18 @@ import {Router} from "@angular/router";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
+
+
 export class NavbarComponent implements  OnChanges{
-  isConnected:boolean=false
+  @Input() isConnected: boolean = false;
   constructor(private authService: AuthService, private router:Router) {
-    this.isConnected = this.authService.getAccessToken() !== null;
   }
   ngOnChanges() {
     this.isConnected = this.authService.getAccessToken() !== null;
 
   }
   logout() {
-    sessionStorage.clear();
+    this.authService.clearToken()
     this.isConnected = false;
     this.router.navigate(['/login']);
   }
