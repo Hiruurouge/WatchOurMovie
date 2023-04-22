@@ -1,11 +1,23 @@
-<form (ngSubmit)="onSubmit()">
-  <div>
-    <label for="username">Nom d'utilisateur (email)</label>
-    <input type="email" id="username" name="username" [(ngModel)]="username" required>
+<section>
+
+  <div class="wrapper fadeInDown">
+    <br>
+    <br>
+    <div id="formContent">
+      <div class="fadeIn first">
+        <img src="assets/movie-svgrepo-com.svg" id="icon" alt="User Icon" />
+      </div>
+      <br>
+      <form  (ngSubmit)="onSubmit()">
+        <input type="text" id="login" class="fadeIn second"[(ngModel)]="username" name="login" placeholder="login" required>
+        <input type="password" id="password"[(ngModel)]="password" class="fadeIn third" name="login" placeholder="password" required>
+        <input type="submit" class="fadeIn fourth" value="Log In">
+      </form>
+
+      <div id="formFooter">
+        <a class="underlineHover" href="#">Forgot Password?</a>
+      </div>
+
+    </div>
   </div>
-  <div>
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" [(ngModel)]="password" required>
-  </div>
-  <button type="submit">Se connecter</button>
-</form>
+</section>
