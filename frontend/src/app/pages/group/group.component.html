@@ -1,0 +1,36 @@
+<div class="container">
+  <br>
+  <button  class="btn btn-success rounded" (click)="openModal()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+    </svg>
+  </button>
+  <div class="modal-background" [hidden]="!isModalOpen" (click)="closeModal()">
+    <div class="modal-container" (click)="stopPropagation($event)">
+      <h2>Créer un nouveau groupe</h2>
+      <form (submit)="createGroup()">
+        <div>
+          <label>Nom du groupe:</label>
+          <input type="text" [(ngModel)]="newGroupName" name="groupName">
+        </div>
+        <button  type="submit">Create Group</button>
+      </form>
+    </div>
+  </div>
+  <h1>Mes groupes</h1>
+  <div class="card-container">
+    <div class="card" *ngFor="let group of userGroups">
+      <div class="card-image">
+        <img src="https://robohash.org/{{group.group_name}}" alt="{{group.group_name}} Image">
+      </div>
+      <div class="card-content">
+        <h2 class="card-title">{{ group.group_name }}</h2>
+        <div class="card-actions">
+          <button *ngIf="group.owner === currentUser.uid" (click)="updateGroup(group)">Modifier</button>
+          <button *ngIf="group.owner === currentUser.uid" (click)="deleteGroup(group)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+</div>
