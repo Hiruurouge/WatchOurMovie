@@ -68,7 +68,7 @@ services:
   visualize-service:
     build: ./visualize-service
     ports:
-      - 3217:3217
+      - 3220:3217
     volumes:
       - ./schema:/code/schema
       - ./model:/code/model
@@ -87,6 +87,17 @@ services:
       backend:
         ipv4_address: "10.5.0.9"
 
+  tmdb-service:
+    build: ./tmdb
+    ports:
+      - 3310:3213
+    volumes:
+      - ./model:/code/model
+      - ./schema:/code/schema
+    networks:
+      backend:
+        ipv4_address: "10.5.0.10"
+
   reco-service:
     build: ./reco_service
     ports:
@@ -98,16 +109,16 @@ services:
       backend:
         ipv4_address: "10.5.0.11"
 
-  tmdb-service:
-    build: ./tmdb
+  staff-service:
+    build: ./staff-service
     ports:
-      - 3310:3213
+      - 3219:3219
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
     networks:
       backend:
-        ipv4_address: "10.5.0.10"
+        ipv4_address: "10.5.0.12"
 
 networks:
   backend: 

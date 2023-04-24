@@ -7,7 +7,7 @@ from .movie import Movie, MovieId
 from .preferences import Preferences
 from .production import Production, ProductionBase
 from .product import Product
-from .staff import Staff
+from .staff import Staff, StaffBase
 from .user import User,UserBase
 from .visualize import Visualize
 from .work import Work

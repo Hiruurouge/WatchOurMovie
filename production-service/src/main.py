@@ -34,7 +34,7 @@ def get_db():
 
 @app.post("/production/like")
 def create_production_relationship(relations: List[LikeProduction],db: Session= Depends(get_db)):
-    result = ctrl.create_production_reference(relations,db)
+    result = ctrl.create_production_preference(relations,db)
     db.close()
     return result
 
