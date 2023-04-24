@@ -10,3 +10,6 @@ class Movie(MovieBase):
     overview : str
     poster: str
     popularity: float
+
+class MovieId(BaseModel):
+    uid: Optional[int]

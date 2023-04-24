@@ -91,3 +91,19 @@ CREATE TABLE IF NOT EXISTS preferences(
     FOREIGN KEY (id_genre) REFERENCES genre(uid) ON DELETE CASCADE,
     CONSTRAINT uid PRIMARY KEY (id_user,id_genre)
 );
+
+CREATE TABLE IF NOT EXISTS like_production(
+    id_production INT NOT NULL,
+    id_user INT NOT NULL, 
+    FOREIGN KEY (id_user) REFERENCES wow_user(uid) ON DELETE CASCADE,
+    FOREIGN KEY (id_production) REFERENCES movie(uid) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS like_staff(
+    id_staff INT NOT NULL,
+    id_user INT NOT NULL, 
+    FOREIGN KEY (id_user) REFERENCES wow_user(uid) ON DELETE CASCADE,
+    FOREIGN KEY (id_staff) REFERENCES staff(uid) ON DELETE CASCADE
+)
+
+

@@ -6,7 +6,11 @@ from .user import user
 from .tmdb import tmdb
 from .recommendation import recommendation
 from .preference import preference
+
+from .visualize import visualize
+
 from .recommendation import recommendation
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from .group import group
@@ -28,4 +32,6 @@ subapi.include_router(user.router)
 subapi.include_router(preference.router)
 subapi.include_router(group.router)
 subapi.include_router(tmdb.router)
+subapi.include_router(visualize.router)
+
 app.mount("/api", subapi)
