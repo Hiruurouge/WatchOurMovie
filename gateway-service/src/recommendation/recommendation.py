@@ -1,22 +1,22 @@
+import json
 from fastapi import APIRouter,Depends
 from ..auth.controller import get_current_user
 from typing import Annotated
-from schema import TokenData
+from schema import TokenData,Prediction
 from dotenv import load_dotenv
 import os
 import requests
-
 load_dotenv()
 
-PREFERENCE_URL = os.getenv("PREFERENCE_URL")
+RECO_URL = os.getenv("RECO_URL")
 
 router = APIRouter(
-    prefix="/ia",
+    prefix="/predict",
     tags=['recommendation']
 )
 
-@router.get('/')
-def get_recommendation(token: Annotated[TokenData,Depends(get_current_user)]):
-    db_preferences = requests.get(f"{PREFERENCE_URL}/all", params={"uid":token.uid})
-    db_preferences.raise_for_status()
-    return {"Movies": []}
+@router.post('/')
+def get_recommendation(preferences: Prediction,token: Annotated[TokenData,Depends(get_current_user)]):
+    headers = {'Content-Type': 'application/json', 'accept': 'application/json'}
+    response = requests.post(f"{RECO_URL}", headers=headers, data=preferences.json())
+    return response.json()
