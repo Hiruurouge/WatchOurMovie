@@ -11,3 +11,5 @@ from .staff import Staff
 from .user import User
 from .visualize import Visualize
 from .work import Work
+from .like_production import LikeProduction
+from .like_staff import LikeStaff

@@ -77,6 +77,17 @@ services:
       backend:
         ipv4_address: "10.5.0.8"
 
+  production-service:
+    build: ./production-service
+    ports:
+      - 3218:3218
+    volumes:
+      - ./schema:/code/schema
+      - ./model:/code/model
+    networks:
+      backend:
+        ipv4_address: "10.5.0.9"
+
   tmdb-service:
     build: ./tmdb
     ports:
