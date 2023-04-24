@@ -16,6 +16,6 @@ router = APIRouter(
 )
 
 @router.post('/movie')
-def get_recommendation(title: str, token: Annotated[TokenData,Depends(get_current_user)]):
+def tmdb_movie_cast_prod_in_db(title: str, token: Annotated[TokenData,Depends(get_current_user)]):
     result = requests.post(TMDB_URL, params={'title': title})
     return result.status_code 
