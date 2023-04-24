@@ -76,7 +76,7 @@ export class PrefFormComponent {
       headers: new HttpHeaders(headerDict), 
     };
     
-    await this.http.get<HttpResponse<string>>("http://localhost:3212/api/ia/", requestOptions)
+    await this.http.get<HttpResponse<string>>("http://localhost:3212/predict/", requestOptions)
     .subscribe((rep) => {
       this.data = JSON.stringify(rep);
     })
