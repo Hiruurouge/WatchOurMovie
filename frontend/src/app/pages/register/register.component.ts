@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as bcrypt from 'bcryptjs';
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -14,7 +15,7 @@ export class RegisterComponent {
   genre: string='';
   age: number=0;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router:Router) { }
 
   onSubmit() {
     //const salt = bcrypt.genSaltSync(10);
@@ -40,6 +41,7 @@ export class RegisterComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
+          this.router.navigate(['login'])
         },
         (error) => {
           console.error(error);

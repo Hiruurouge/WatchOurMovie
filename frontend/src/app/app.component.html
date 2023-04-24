@@ -2,11 +2,14 @@
   <app-navbar [isConnected]="isConnected"></app-navbar>
 </header>
 <main>
-  <ng-container *ngIf="isConnected; else login">
+  <ng-container *ngIf="isConnected || wantRegister; else login">
     <router-outlet></router-outlet>
   </ng-container>
   <ng-template #login>
-  <app-login></app-login>
+    <div class="login-container">
+      <app-login></app-login>
+      <button (click)="register()">S'inscrire ?</button>
+    </div>
   </ng-template>
 </main>
 <footer>
