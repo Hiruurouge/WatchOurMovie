@@ -15,8 +15,8 @@ def create_one(db: Session, obj: Type[BaseModel]):
         db.add(orm_obj)
         db.commit()
         db.refresh(orm_obj)
-    except:
-        print("T'sais quoi ça a pas marché et je m'en fous")
+    except Exception as e:
+        print("Exception : ", e)
     
 
 def delete_one(db:Session, obj: Type[BaseModel]):
