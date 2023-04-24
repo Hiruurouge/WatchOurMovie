@@ -3,7 +3,7 @@ from .belong import Belong
 from .be import Be
 from .genre import Genre, GenreBase
 from .group import Group,GroupBase
-from .movie import Movie
+from .movie import Movie, MovieId
 from .preferences import Preferences
 from .production import Production
 from .product import Product
