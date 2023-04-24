@@ -54,7 +54,6 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.6"
-  
   genre-service:
     build: ./genre-service
     ports:
@@ -87,6 +86,17 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.9"
+
+  reco-service:
+    build: ./reco_service
+    ports:
+      - 3217:3217
+    volumes:
+      - ./model:/code/model
+      - ./schema:/code/schema
+    networks:
+      backend:
+        ipv4_address: "10.5.0.11"
 
   tmdb-service:
     build: ./tmdb
