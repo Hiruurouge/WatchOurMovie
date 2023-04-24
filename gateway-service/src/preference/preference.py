@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
 from ..auth.controller import get_current_user
 from typing import Annotated
-from schema import TokenData, GenreBase, Preferences, ProductionBase, LikeProduction
+from schema import TokenData, GenreBase, Preferences, ProductionBase, LikeProduction, LikeStaff, StaffBase
 from dotenv import load_dotenv
 from typing import List
 import os
@@ -11,6 +11,7 @@ load_dotenv()
 
 GENRE_URL = os.getenv("GENRE_URL")
 PRODUCTION_URL= os.getenv("PRODUCTION_URL")
+STAFF_URL = os.getenv("STAFF_URL")
 
 router = APIRouter(
     prefix="/like",
@@ -56,3 +57,24 @@ def delete_genre_preference(production: ProductionBase,token: Annotated[TokenDat
     result = requests.delete(f"{PRODUCTION_URL}/like",data=preference.json())
     result.raise_for_status()
     return result.json()
+
+@router.get("/staff")
+def get_genre_preference(token: Annotated[TokenData,Depends(get_current_user)]):
+    db_preferences = requests.get(f"{STAFF_URL}/like/all", params={"uid":token.uid})
+    db_preferences.raise_for_status()
+    return db_preferences.json()
+
+@router.post("/staff")
+def create_genre_preference(staffs: List[StaffBase], token: Annotated[TokenData,Depends(get_current_user)]):
+    preferences = [LikeStaff(id_user=int(token.uid), id_staff=staff.uid).dict() for staff in staffs]
+    result = requests.post(f"{STAFF_URL}/like", data=json.dumps(preferences))
+    result.raise_for_status()
+    return result.json()
+
+@router.delete("/staff")
+def delete_genre_preference(staff: StaffBase,token: Annotated[TokenData,Depends(get_current_user)]):
+    preference= LikeStaff(id_user=int(token.uid),id_staff=staff.uid)
+    result = requests.delete(f"{STAFF_URL}/like",data=preference.json())
+    result.raise_for_status()
+    return result.json()
+
