@@ -67,6 +67,17 @@ services:
       backend:
         ipv4_address: "10.5.0.7"
 
+  movie-service:
+    build: ./movie-service
+    ports:
+      - 3219:3219
+    volumes:
+      - ./model:/code/model
+      - ./schema:/code/schema
+    networks:
+      backend:
+        ipv4_address: "10.5.0.9"
+
   visualize-service:
     build: ./visualize-service
     ports:
