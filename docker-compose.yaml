@@ -57,7 +57,7 @@ services:
       backend:
         ipv4_address: "10.5.0.6"
   preference-service:
-    build: ./preference-service
+    build: ./preferences-service
     ports:
       - 3216:3216
     volumes:
