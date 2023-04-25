@@ -9,7 +9,7 @@ import requests
 
 load_dotenv()
 
-PRODUCTION_URL = os.getenv("PRODUCTION_URL")
+MOVIE_URL = os.getenv("MOVIE_URL")
 
 router = APIRouter(
     prefix="/production",
@@ -18,5 +18,5 @@ router = APIRouter(
 
 @router.get('/all')
 def get_prod(token: Annotated[TokenData,Depends(get_current_user)]):
-    db_prod= requests.get(f"{PRODUCTION_URL}/all", params={"uid":token.uid})
+    db_prod= requests.get(f"{MOVIE_URL}/movie/all", params={"uid":token.uid})
     return db_prod.json()
