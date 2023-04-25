@@ -1,13 +1,18 @@
 import json
 import numpy as np
 import pymysql
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+MYSQL_USER = os.getenv('MYSQL_USER')
 # Définir les films
 connection = pymysql.connect(
     host='10.5.0.2',
     port=3306,
-    user='app',
-    password='rZ3uNu3VeBJKowr3b42Q',
+    user=MYSQL_USER,
+    password=MYSQL_PASSWORD,
     database='wow',
     cursorclass=pymysql.cursors.DictCursor)
 
