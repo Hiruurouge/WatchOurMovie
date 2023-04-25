@@ -20,7 +20,7 @@ connection = pymysql.connect(
 try:
     with connection.cursor() as cursor:
         # Récupération des données de chaque film
-        cursor.execute("SELECT uid, title,poster FROM movie")
+        cursor.execute("SELECT uid, title,poster,overview FROM movie")
         movies = cursor.fetchall()
         # Récupération des genres, maisons de production et réalisateurs pour chaque film
         for movie in movies:

@@ -16,6 +16,7 @@ import { UserProfileUpdateComponent } from './pages/user-profile-update/user-pro
 import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 import { NavbarComponent } from './pages/navbar/navbar.component';
 import { GenrePreferenceComponent } from './pages/genre-preference/genre-preference.component';
+import { ModalComponent } from './pages/modal/modal.component';
 //import { TokenInterceptor } from '././services/group.service';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { GenrePreferenceComponent } from './pages/genre-preference/genre-prefere
     UserProfileUpdateComponent,
     UserProfileComponent,
     NavbarComponent,
-    GenrePreferenceComponent
+    GenrePreferenceComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

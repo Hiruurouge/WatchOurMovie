@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import {UserI} from "../interface/wom";
 import {GroupI} from "../interface/wom";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,18 @@ export class GroupService {
 
   apiUrl: string = 'http://localhost:3212/api/group';
   token: string =''
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private userService:UserService) {
     this.token = authService.getAccessToken()!
   }
 
-  getUserGroups(): Observable<any[]> {
+   getUserGroups(): Observable<any[]> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     });
-    return this.http.get<any[]>(`${this.apiUrl}/all?uid=16`,{headers});
+     this.userService.getUser()
+    let user = this.userService.user
+    return this.http.get<any[]>(`${this.apiUrl}/all?uid=${user.uid}`,{headers});
   }
 
   createGroup(groupName: string): Observable<any> {

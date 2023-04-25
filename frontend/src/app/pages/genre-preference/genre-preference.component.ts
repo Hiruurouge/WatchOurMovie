@@ -1,6 +1,9 @@
 import { Component, OnInit,OnChanges } from '@angular/core';
-import { GenreI } from '../../interface/wom';
+import { GenreI,StaffI,ProdI,MovieDataI } from '../../interface/wom';
 import { GenrePreferenceService } from '../../services/genre-preference.service';
+import {StaffService} from "../../services/staff.service";
+import {ProductionService} from "../../services/production.service";
+import {PredictionService} from "../../services/prediction.service";
 
 @Component({
   selector: 'app-genre-preference',
@@ -29,19 +32,38 @@ export class GenrePreferenceComponent implements OnInit {
     { uid: 10752, name: 'War' },
     { uid: 10770, name: 'TV Movie' }
   ];
-
+  staffList:any=[]
+  isMovieModalOpen:boolean=false
+  prodlist: any = []
+  movies: any =[]
   genres: GenreI[]=Array(<GenreI>{})
-
+  staffs: StaffI[]=Array(<StaffI>{})
+  prods:ProdI[]=Array(<ProdI>{})
   newGenre: GenreI =  <GenreI>{};
-  showModal = false;
+  showProductionModal = false;
+  showStaffModal = false;
+  selectedStaff: StaffI= <StaffI>{}
+  selectedProd: ProdI = <ProdI>{}
+  newStaff:StaffI=<StaffI>{}
+   newProd: ProdI=<ProdI>{};
 
+  constructor(private genrePreferenceService: GenrePreferenceService, private staffService:StaffService,private prodService:ProductionService, private recService:PredictionService) {
 
-  constructor(private genrePreferenceService: GenrePreferenceService) { }
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.genrePreferenceService.getGenrePreferences().subscribe((res: any) => {
       this.genres = res;
     });
+    this.genrePreferenceService.getProductionPreferences().subscribe((res)=>{
+      this.prods = res;
+    })
+    this.genrePreferenceService.getStaffPreferences().subscribe((res)=>{
+      this.staffs = res;
+    })
+    await this.staffService.getAllStaff().toPromise().then((res)=> this.staffList=res)
+    await this.prodService.getAllProd().toPromise().then((res)=>this.prodlist=res)
+    console.log(this.genres,this.staffs,this.prods)
   }
 
   addGenrePreference() {
@@ -56,7 +78,8 @@ export class GenrePreferenceComponent implements OnInit {
 onGenreSelect(event:any){
   const selectedGenreName = event.target.value;
   const selectedGenre = this.genresList.find(genre => genre.name === selectedGenreName);
-  this.newGenre = selectedGenre as GenreI;}
+  this.newGenre = selectedGenre as GenreI;
+  }
   deleteGenrePreference(genre: GenreI) {
     this.genrePreferenceService.deleteGenrePreference(genre).subscribe((res: any) => {
       this.genrePreferenceService.getGenrePreferences().subscribe((res: any) => {
@@ -75,9 +98,95 @@ onGenreSelect(event:any){
   closeModal() {
     this.isModalOpen = false;
   }
+  openStaffModal(){
+    this.showStaffModal = true
+  }
+  closeStaffModal(){
+    this.showStaffModal =false
+  }
 
+  openProdModal(){
+    this.showProductionModal = true
+  }
+  closeProdModal(){
+    this.showProductionModal =false
+  }
 // Fonction pour empêcher la propagation de l'événement lorsqu'on clique à l'intérieur de la fenêtre modale
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
   }
+  addStaffPreference(){
+    this.genrePreferenceService.addStaffPreference([this.newStaff]).subscribe((res: any) => {
+      this.showStaffModal = false
+      this.genrePreferenceService.getStaffPreferences().subscribe((res: any) => {
+        this.staffs = res;
+        console.log(this.staffs)
+      });
+    });  }
+  onStaff(event:any){
+    const selectedStaffName = event.target.value;
+    this.selectedStaff = this.staffList.find((staff: { name: any; }) => staff.name === selectedStaffName);
+    this.newStaff = this.selectedStaff
+    console.log(this.newStaff)
+  }
+  addProdPreference(){
+    this.genrePreferenceService.addProductionPreference([this.newProd]).subscribe((res: any) => {
+      this.showProductionModal = false
+      this.genrePreferenceService.getProductionPreferences().subscribe((res: any) => {
+        this.prods = res;
+        console.log(this.prods)
+      });
+    });  }
+  onProd(event:any){
+    const prodName = event.target.value;
+    this.selectedProd = this.prodlist.find((prod: { name: any; }) => prod.name === prodName);
+    this.newProd = this.selectedProd
+    console.log(this.newProd)
+  }
+  reco(){
+    const obj:MovieDataI = {
+      genres: [],
+      staffs: [],
+      productions: []
+    };
+    // Ajouter les genres
+    for (const genre of this.genres) {
+      obj.genres.push({
+        uid: obj.genres.length,
+        name: genre.name
+      });
+    }
+
+// Ajouter les staffs
+    for (const staff of this.staffs) {
+      obj.staffs.push({
+        uid: obj.staffs.length,
+        name: staff.name,
+        job: staff.job
+      });
+    }
+
+// Ajouter les productions
+    for (const prod of this.prods) {
+      obj.productions.push({
+        uid: obj.productions.length,
+        name: prod.name
+      });
+    }
+    console.log(obj)
+    this.recService.getRecommendation(obj).toPromise().then((res)=> {
+      this.movies = res
+      console.log(this.movies[0])
+    })
+  }
+  openMovieModal()
+  {
+    this.reco()
+    this.isMovieModalOpen = true;
+  }
+  closeMovieModal()
+  {
+    this.isMovieModalOpen = false
+  }
+
 }

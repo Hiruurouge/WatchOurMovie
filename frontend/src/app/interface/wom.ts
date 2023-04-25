@@ -14,3 +14,23 @@ export interface GenreI {
   uid: number
   name:string
 }
+export interface StaffI{
+  name: string,
+  uid: number,
+  job: string
+}
+export interface ProdI{
+  uid: number,
+  name: string
+
+}
+export interface ProductionI{
+  uid: number;
+  name: string;
+}
+export interface MovieDataI {
+  genres: GenreI[];
+  staffs: StaffI[];
+  productions: ProductionI[];
+}
+

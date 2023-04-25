@@ -40,7 +40,7 @@ def create_staff_relationship(relations: List[LikeStaff],db: Session= Depends(ge
 
 @app.get("/staff/like/all")
 def get_staff_preferences_by_user(uid:int, db:Session= Depends(get_db)):
-    result = ctrl.get_preferences_by_user(uid,db)
+    result = ctrl.get_staffs_by_user(uid,db)
     db.close()
     return result
 

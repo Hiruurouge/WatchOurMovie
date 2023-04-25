@@ -5,7 +5,7 @@ from typing import List
 
 
 def create_production_preference(preferences: List[LikeProduction], db: Session):
-    db_preferences=[model.LikeProduction(id_user= preference.id_user, id_genre=preference.id_production) for preference in preferences]
+    db_preferences=[model.LikeProduction(id_user= preference.id_user, id_production=preference.id_production) for preference in preferences]
     db.add_all(db_preferences)
     db.commit()
     return preferences
