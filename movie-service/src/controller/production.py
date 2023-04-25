@@ -1,7 +1,6 @@
 import model
 from schema import ProductionBase, Production
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
 from typing import List
 
 def create_production(production:Production, db:Session):
