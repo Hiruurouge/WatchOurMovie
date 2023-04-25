@@ -192,11 +192,11 @@ onGenreSelect(event:any){
     await this.recService.getRecommendation(obj).toPromise().then((res)=> {
       this.movies = res
     })
-    return this
   }
-  openMovieModal()
+  async openMovieModal()
   {
-    this.reco()
+    await this.reco()
+    console.log(this.movies)
     this.isMovieModalOpen = true;
   }
   closeMovieModal()

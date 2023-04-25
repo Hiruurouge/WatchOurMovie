@@ -66,21 +66,22 @@
   </div>
 </div>
 
-<div class="modal-background" [hidden]="!isMovieModalOpen" (click)="closeMovieModal()">
-  <div class="modal-container" (click)="stopPropagation($event)">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="card-container">
+<div class="movie-modal-background" [hidden]="!isMovieModalOpen" (click)="closeMovieModal()">
+  <div class="movie-modal-container" (click)="stopPropagation($event)">
+    <div class="movie-modal-content">
+      <span class="movie-modal-close">&times;</span>
+      <div class="movie-card-container">
         <!-- Boucle pour afficher chaque film -->
-        <div class="card" *ngFor="let movie of movies">
-          <img [src]="movie.poster" alt="Poster">
-          <div class="card-body">
-            <h5 class="card-title">{{ movie.title }}</h5>
-            <p class="card-text2">{{ movie.overview }}</p>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item2"><strong>Genres :</strong> {{ movie.genres.join(', ') }}</li>
-              <li class="list-group-item2"><strong>Maisons de production :</strong> {{ movie.maisons_de_production.join(', ') }}</li>
-              <li class="list-group-item2"><strong>Réalisateurs :</strong> {{ movie.realisateurs.join(', ') }}</li>
+        <div class="movie-card" *ngFor="let movie of movies">
+          <img [src]="movie.poster" alt="Poster" class="movie-card-img">
+          <div class="movie-card-body">
+            <h5 class="movie-card-title">{{ movie.title }}</h5>
+            <p class="movie-card-text" [ngClass]="{'movie-card-text--large': movie.showFullOverview}">{{ movie.overview }}</p>
+            <button *ngIf="!movie.showFullOverview" class="movie-card-btn" (click)="movie.showFullOverview = true">Voir plus</button>
+            <ul class="movie-list-group">
+              <li class="movie-list-group-item"><strong>Genres :</strong> {{ movie.genres.join(', ') }}</li>
+              <li class="movie-list-group-item"><strong>Maisons de production :</strong> {{ movie.maisons_de_production.join(', ') }}</li>
+              <li class="movie-list-group-item"><strong>Réalisateurs :</strong> {{ movie.realisateurs.join(', ') }}</li>
             </ul>
           </div>
         </div>
@@ -88,6 +89,8 @@
     </div>
   </div>
 </div>
+
+
 
 <div class="modal-background" [hidden]="!isModalOpen" (click)="closeModal()">
   <div class="modal-container" (click)="stopPropagation($event)">
