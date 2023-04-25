@@ -1,7 +1,7 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends, HTTPException, status
 from ..auth.controller import get_current_user
 from typing import Annotated
-from schema import TokenData, GenreBase, Preferences, ProductionBase, LikeProduction, LikeStaff, StaffBase
+from schema import TokenData, GenreBase, Preferences, ProductionBase, LikeProduction, LikeStaff, StaffBase, UserBase, GroupBase
 from dotenv import load_dotenv
 from typing import List
 import os
@@ -80,7 +80,13 @@ def delete_staff_preference(staff: StaffBase,token: Annotated[TokenData,Depends(
     return result.json()
 
 @router.post("/group")
-def get_group_preference(members:List[int],token: Annotated[TokenData,Depends(get_current_user)]):
-    result = requests.post(f"{GROUP_URL}/like", data=json.dumps(members))
+def get_group_preference(group: GroupBase,token: Annotated[TokenData,Depends(get_current_user)]):
+    users_response = requests.get(f"{GROUP_URL}/users" ,params={"uid":group.uid}) 
+    users = users_response.json()
+    users_id: List[UserBase] = [UserBase(uid = int(x['uid'])) for x in users]
+    if not (int(token.uid) in users_id):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access Denied.")
+    
+    result = requests.post(f"{GROUP_URL}/like", data=users_id)
     result.raise_for_status()
     return result.json()
