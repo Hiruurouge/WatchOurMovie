@@ -3,6 +3,8 @@ version: '3.3'
 services:
   db:
     build: ./db
+    ports:
+      - 3306:3306
     env_file:
       - ./db/.env
     volumes:
@@ -100,8 +102,10 @@ services:
 
   reco-service:
     build: ./reco_service
+    depends_on:
+      - db
     ports:
-      - 3217:3217
+      - 3217:3220
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema

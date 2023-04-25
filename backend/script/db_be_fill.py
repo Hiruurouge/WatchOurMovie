@@ -1,30 +1,30 @@
+import csv
 import pymysql
 
-# Connexion à la base de données
-connection = pymysql.connect(host='localhost', user='root', password='', db='wow')
+# Se connecter à la base de données
+connection = pymysql.connect(host='localhost',
+                             user='app',
+                             password='rZ3uNu3VeBJKowr3b42Q',
+                             db='wow',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
 
+# Ouvrir le fichier CSV contenant les données des films
+with open('./data.csv', newline='', encoding='utf-8') as csvfile:
+    reader = csv.DictReader(csvfile)
 
-# Récupération des correspondances entre noms de genres et IDs de genres
-genre_map = {}
-with connection.cursor() as cursor:
-    cursor.execute('SELECT name, uid FROM genre')
-    for name, uid in cursor.fetchall():
-        genre_map[name] = uid
+    # Parcourir chaque ligne du fichier CSV
+    for row in reader:
+        # Récupérer les genres du film et les convertir en liste
+        genres = row['genres'].split('|')
 
-# Récupération des IDs de films et des noms de genres correspondants dans la table movie
-with connection.cursor() as cursor:
-    cursor.execute('SELECT uid, genres FROM movie')
-    for uid, genres_str in cursor.fetchall():
-        genres = genres_str.split(',')
-        for genre_name in genres:
-            # Récupération de l'ID correspondant dans la table genre
-            genre_id = genre_map.get(genre_name)
-            if genre_id:
-                # Insertion dans la table be
-                cursor.execute('INSERT INTO be (id_genre, id_movie) VALUES (%s, %s)', (genre_id, uid))
+        # Insérer chaque genre du film dans la table d'association be
+        with connection.cursor() as cursor:
+            for genre in genres:
+                cursor.execute("INSERT INTO be (id_genre, id_movie) SELECT uid, %s FROM genre WHERE name=%s", (row['id'], genre))
 
-# Validation de la transaction
-connection.commit()
+        # Commit après chaque film pour s'assurer que les données sont bien écrites dans la base de données
+        connection.commit()
 
-# Fermeture de la connexion
+# Fermer la connexion à la base de données
 connection.close()

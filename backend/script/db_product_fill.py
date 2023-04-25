@@ -1,37 +1,53 @@
-import pymysql
-import requests
+import csv
+import pymysql.cursors
 
-# Connexion à la base de données
-conn = pymysql.connect(host='localhost', user='root', password='', db='wow')
+# Connect to the database
+connection = pymysql.connect(host='localhost',
+                             user='app',
+                             password='rZ3uNu3VeBJKowr3b42Q',
+                             db='wow',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
 
-# Récupération des films de la table "movie"
-cur = conn.cursor()
-cur.execute("SELECT uid, title FROM movie")
-movies = cur.fetchall()
+try:
+    with open('data.csv', 'r', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            # Check if the movie id exists in the movie table
+            cursor = connection.cursor()
+            cursor.execute("SELECT uid FROM movie WHERE uid=%s", (row['id'],))
+            result = cursor.fetchone()
+            if result is None:
+                print(f"Movie with id {row['id']} not found in database.")
+            else:
+                # Split the production companies string into a list of company names
+                production_companies = row['production_companies'].split('|')
+                for production_company in production_companies:
+                    # Check if the production company exists in the production table
+                    cursor = connection.cursor()
+                    cursor.execute("SELECT uid FROM production WHERE name=%s", (production_company,))
+                    result = cursor.fetchone()
+                    if result is None:
+                        # If the production company doesn't exist, insert it into the production table and get the new uid
+                        cursor = connection.cursor()
+                        cursor.execute("INSERT INTO production (name) VALUES (%s)", (production_company,))
+                        production_uid = cursor.lastrowid
+                    else:
+                        # If the production company already exists, use its uid
+                        production_uid = result['uid']
+                    # Check if the relationship already exists in the product table
+                    cursor = connection.cursor()
+                    cursor.execute("SELECT id_production, id_movie FROM product WHERE id_production=%s AND id_movie=%s",
+                                   (production_uid, row['id']))
+                    result = cursor.fetchone()
+                    if result is not None:
+                        print(f"Relationship between movie {row['id']} and production {production_uid} already exists.")
+                    else:
+                        # If the relationship doesn't exist, insert it into the product table
+                        cursor = connection.cursor()
+                        cursor.execute("INSERT INTO product (id_production, id_movie) VALUES (%s, %s)",
+                                       (production_uid, row['id']))
+            connection.commit()
 
-# Parcours des films
-for movie in movies:
-    # Appel à l'API pour récupérer les informations de production
-    api_url = f"https://api.themoviedb.org/3/movie/{movie[0]}?api_key=3f49224776894938c6b988e3d4d0e944&language=en-US"
-    response = requests.get(api_url)
-    if response.status_code != 200:
-        print(f"Erreur lors de la récupération des informations pour le film {movie[1]}")
-        continue
-    production_data = response.json().get("production_companies", [])
-    
-    # Recherche des identifiants de production correspondant aux noms dans les données de l'API
-    production_ids = []
-    for production in production_data:
-        cur.execute("SELECT uid FROM production WHERE name = %s", production["name"])
-        result = cur.fetchone()
-        if result:
-            production_ids.append(result[0])
-    
-    # Ajout des relations dans la table "product"
-    for production_id in production_ids:
-        cur.execute("INSERT INTO product (id_production, id_movie) VALUES (%s, %s)", (production_id, movie[0]))
-        conn.commit()
-
-# Fermeture de la connexion
-cur.close()
-conn.close()
+finally:
+    connection.close()

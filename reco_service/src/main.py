@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from schema.prediction import Prediction
-from .controller.getMovie import recommander_films
+from .controller import recommander_films
 app = FastAPI()
 
 @app.post("/ia/predict")

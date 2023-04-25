@@ -1,40 +1,42 @@
 import json
 import numpy as np
+import pymysql
 
 # Définir les films
-films = [
-    {
-        'titre': 'La La Land',
-        'genres': ['comédie musicale', 'romance', 'drame'],
-        'realisateurs': ['Damien Chazelle'],
-        'maisons_de_production': ['Summit Entertainment', 'Black Label Media']
-    },
-    {
-        'titre': 'The Dark Knight',
-        'genres': ['action', 'thriller', 'drame'],
-        'realisateurs': ['Christopher Nolan'],
-        'maisons_de_production': ['Warner Bros. Pictures', 'Legendary Entertainment']
-    },
-    {
-        'titre': 'Inception',
-        'genres': ['action', 'aventure', 'sci-fi'],
-        'realisateurs': ['Christopher Nolan'],
-        'maisons_de_production': ['Warner Bros. Pictures', 'Syncopy']
-    },
-    {
-        'titre': 'Jurassic Park',
-        'genres': ['action', 'aventure', 'sci-fi'],
-        'realisateurs': ['Steven Spielberg'],
-        'maisons_de_production': ['Universal Pictures', 'Amblin Entertainment']
-    },
-    {
-        'titre': 'Titanic',
-        'genres': ['romance', 'drame'],
-        'realisateurs': ['James Cameron'],
-        'maisons_de_production': ['Paramount Pictures', '20th Century Fox']
-    }
-]
+connection = pymysql.connect(
+    host='10.5.0.2',
+    port=3306,
+    user='app',
+    password='rZ3uNu3VeBJKowr3b42Q',
+    database='wow',
+    cursorclass=pymysql.cursors.DictCursor)
 
+
+try:
+    with connection.cursor() as cursor:
+        # Récupération des données de chaque film
+        cursor.execute("SELECT uid, title,poster FROM movie")
+        movies = cursor.fetchall()
+        # Récupération des genres, maisons de production et réalisateurs pour chaque film
+        for movie in movies:
+            # Récupération des genres pour chaque film
+            cursor.execute("SELECT genre.* FROM genre JOIN be ON genre.uid=be.id_genre WHERE be.id_movie=%s", (movie['uid'],))
+            genres = [genre['name'] for genre in cursor.fetchall()]
+            movie['genres'] = genres
+
+            # Récupération des maisons de production pour chaque film
+            cursor.execute("SELECT production.* FROM production JOIN product ON production.uid=product.id_production WHERE product.id_movie=%s", (movie['uid'],))
+            productions = [prod['name'] for prod in cursor.fetchall()]
+            movie['maisons_de_production'] = productions
+
+            # Récupération des réalisateurs pour chaque film
+            cursor.execute("SELECT staff.* FROM staff JOIN work ON staff.uid=work.id_staff WHERE work.id_movie=%s AND staff.job='Director'", (movie['uid'],))
+            directors = [dir['name'] for dir in cursor.fetchall()]
+            movie['realisateurs'] = directors
+
+finally:
+    # Fermeture de la connexion à la base de données
+    connection.close()
 # Définir les utilisateurs
 utilisateurs = [
     {
@@ -67,6 +69,15 @@ utilisateurs = [
 genres_dict = {}
 realisateurs_dict = {}
 maisons_de_production_dict = {}
+
+films = []
+for movie in movies:
+    nouveau_film = {}
+    nouveau_film['titre'] = movie['title']
+    nouveau_film['genres'] = movie['genres']
+    nouveau_film['realisateurs'] = movie['realisateurs']
+    nouveau_film['maisons_de_production'] = movie['maisons_de_production']
+    films.append(nouveau_film)
 
 for film in films:
     titre = film['titre']
@@ -120,13 +131,10 @@ def cosine_similarity(a, b):
 
 def recommander_films(preferences):
     #preferences = json.loads(preferences)
-    print(preferences)
     data = json.loads(preferences)
     preferences = transform_object(data)
-    print(type(preferences))
     films_recommandes = []
-    # Collecter tous les films préférés de l'utilisateur
-    print(genres_dict)
+    # Collecter tous les films avec les de l'utilisateur
     for genre in preferences['genres']:
         if genre not in genres_dict:
             genres_dict.setdefault(genre, [])
@@ -140,7 +148,7 @@ def recommander_films(preferences):
             maisons_de_production_dict.setdefault(maison_de_production,[])
         films_recommandes.extend(maisons_de_production_dict[maison_de_production])
 
-    # Enlever les films en double et créer un dictionnaire pour stocker les similarités cosinus
+    # Enlever les doublons
     films_recommandes = list(set(films_recommandes))
     similarites_cosinus = {}
 
@@ -152,7 +160,7 @@ def recommander_films(preferences):
         film_realisateurs = films[0]['realisateurs']
         film_maisons_de_production = films[0]['maisons_de_production']
 
-        # Créer un vecteur pour les préférences de film
+        # Créer un vecteur pour les films
         for genre in film_genres:
             if genre in preferences['genres']:
                 film_preferences[0] = 1
@@ -174,4 +182,13 @@ def recommander_films(preferences):
 
     # Trier les films par ordre de similarité cosinus décroissante et retourner les meilleurs films recommandés
     films_recommandes = sorted(similarites_cosinus.keys(), key=lambda x: similarites_cosinus[x], reverse=True)
-    return films_recommandes[:5]
+    print(similarites_cosinus)
+    
+    films_recommandes_objets = []
+
+    for titre in films_recommandes[:10]:
+        for film in movies:
+            if film['title'] == titre:
+                films_recommandes_objets.append(film)
+                break
+    return films_recommandes_objets
