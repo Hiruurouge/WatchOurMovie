@@ -70,9 +70,3 @@ def get_groups_by_user(db:Session,uid:int):
     result = db.query(model.Group).join(model.Belong).filter(model.Belong.id_user==uid).all()
     return result
 
-def get_group_preferences(members: List[int], db:Session):
-    genres = db.query(model.Genre).join(model.Preferences).filter(model.Preferences.id_user.in_(members)).all()
-    productions = db.query(model.Production).join(model.LikeProduction).filter(model.LikeProduction.id_user.in_(members)).all()
-    staffs =db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(members)).all()
-
-    return Prediction(genres=genres,staffs=staffs, productions=productions)

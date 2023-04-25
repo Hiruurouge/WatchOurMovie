@@ -56,8 +56,8 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.6"
-  genre-service:
-    build: ./genre-service
+  preference-service:
+    build: ./preference-service
     ports:
       - 3216:3216
     volumes:
@@ -77,17 +77,6 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.8"
-
-  production-service:
-    build: ./production-service
-    ports:
-      - 3218:3218
-    volumes:
-      - ./schema:/code/schema
-      - ./model:/code/model
-    networks:
-      backend:
-        ipv4_address: "10.5.0.9"
 
   tmdb-service:
     build: ./tmdb
@@ -113,16 +102,6 @@ services:
       backend:
         ipv4_address: "10.5.0.11"
 
-  staff-service:
-    build: ./staff-service
-    ports:
-      - 3219:3219
-    volumes:
-      - ./model:/code/model
-      - ./schema:/code/schema
-    networks:
-      backend:
-        ipv4_address: "10.5.0.12"
 
 networks:
   backend: 

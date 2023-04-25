@@ -1,7 +1,6 @@
 import model
 from schema import Genre, GenreBase
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
 from typing import List
 
 def create_genre(genre:Genre, db:Session):

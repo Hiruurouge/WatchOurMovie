@@ -80,8 +80,3 @@ def get_groups_by_user(uid:int,db:Session= Depends(get_db)):
     db.close()
     return result
 
-@app.post("/like")
-def get_all_preferences(members:List[int], db:Session=Depends(get_db)):
-    result =ctrl.get_group_preferences(members,db)
-    db.close()
-    return result

@@ -1,2 +1,0 @@
-from .preferences import create_preference, get_preferences_by_user, delete_preferences, update_preferences
-from .genre import get_all_genres,create_genre,create_genres,delete_genre,update_genre, get_genre
