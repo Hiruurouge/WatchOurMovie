@@ -187,7 +187,7 @@ def recommander_films(preferences):
 
     # Trier les films par ordre de similarité cosinus décroissante et retourner les meilleurs films recommandés
     films_recommandes = sorted(similarites_cosinus.keys(), key=lambda x: similarites_cosinus[x], reverse=True)
-    print(similarites_cosinus)
+    print(films_recommandes)
     
     films_recommandes_objets = []
 

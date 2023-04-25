@@ -87,6 +87,20 @@ onGenreSelect(event:any){
       });
     });
   }
+  deleteStaffPreference(staff:StaffI)
+  {
+    this.genrePreferenceService.deleteStaffPreference(staff).subscribe((res: any) => {
+      this.genrePreferenceService.getStaffPreferences().subscribe((res: any) => {
+        this.staffs = res;
+      });
+    });  }
+  deleteProdPreferences(prod:ProdI)
+  {
+    this.genrePreferenceService.deleteProductionPreference(prod).subscribe((res: any) => {
+      this.genrePreferenceService.getProductionPreferences().subscribe((res: any) => {
+        this.prods = res;
+      });
+    });  }
   isModalOpen = false;
 
 // Fonction pour ouvrir la fenêtre modale
@@ -143,7 +157,8 @@ onGenreSelect(event:any){
     this.newProd = this.selectedProd
     console.log(this.newProd)
   }
-  reco(){
+  async reco(){
+    this.movies = []
     const obj:MovieDataI = {
       genres: [],
       staffs: [],
@@ -173,11 +188,11 @@ onGenreSelect(event:any){
         name: prod.name
       });
     }
-    console.log(obj)
-    this.recService.getRecommendation(obj).toPromise().then((res)=> {
+
+    await this.recService.getRecommendation(obj).toPromise().then((res)=> {
       this.movies = res
-      console.log(this.movies[0])
     })
+    return this
   }
   openMovieModal()
   {
