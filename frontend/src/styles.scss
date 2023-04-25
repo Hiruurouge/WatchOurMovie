@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+$wow-bg:#292929;
+$wow-darkest:#1E1E1E;
+$wow-light:#F1F1F1;
+body{
+  background-color: $wow-bg;
+  color:$wow-light
+}
+ul{
+  list-style: none;
+}
+.standard-button{
+  border:1px solid;
+  border-radius:5px;
+}
 @import "~bootstrap/dist/css/bootstrap.css";
+

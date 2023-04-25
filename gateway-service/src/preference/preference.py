@@ -12,6 +12,7 @@ load_dotenv()
 GENRE_URL = os.getenv("GENRE_URL")
 PRODUCTION_URL= os.getenv("PRODUCTION_URL")
 STAFF_URL = os.getenv("STAFF_URL")
+GROUP_URL = os.getenv("GROUP_URL")
 
 router = APIRouter(
     prefix="/like",
@@ -78,3 +79,8 @@ def delete_staff_preference(staff: StaffBase,token: Annotated[TokenData,Depends(
     result.raise_for_status()
     return result.json()
 
+@router.post("/group")
+def get_group_preference(members:List[int],token: Annotated[TokenData,Depends(get_current_user)]):
+    result = requests.post(f"{GROUP_URL}/like", data=json.dumps(members))
+    result.raise_for_status()
+    return result.json()

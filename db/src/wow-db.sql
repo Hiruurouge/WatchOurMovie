@@ -104,6 +104,6 @@ CREATE TABLE IF NOT EXISTS like_staff(
     id_user INT NOT NULL, 
     FOREIGN KEY (id_user) REFERENCES wow_user(uid) ON DELETE CASCADE,
     FOREIGN KEY (id_staff) REFERENCES staff(uid) ON DELETE CASCADE
-)
+);
 
 

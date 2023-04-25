@@ -1,8 +1,10 @@
 import model
-from schema import Group, GroupBase, Belong
+from schema import Group, GroupBase, Belong, Prediction
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import List
+
+
 def create_group(group:Group, db:Session):
     db_group=model.Group(group_name=group.group_name, owner=group.owner)
     db.add(db_group)
@@ -67,3 +69,10 @@ def get_users_by_group(db:Session, uid:int):
 def get_groups_by_user(db:Session,uid:int):
     result = db.query(model.Group).join(model.Belong).filter(model.Belong.id_user==uid).all()
     return result
+
+def get_group_preferences(members: List[int], db:Session):
+    genres = db.query(model.Genre).join(model.Preferences).filter(model.Preferences.id_user.in_(members)).all()
+    productions = db.query(model.Production).join(model.LikeProduction).filter(model.LikeProduction.id_user.in_(members)).all()
+    staffs =db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(members)).all()
+
+    return Prediction(genres=genres,staffs=staffs, productions=productions)
