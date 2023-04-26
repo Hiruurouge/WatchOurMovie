@@ -4,5 +4,5 @@ from schema import Genre,Production,Staff
 
 class Prediction(BaseModel):
     genres: List[Genre]
-    staffs:List[Staff]
-    productions:List[Production]
+    staffs: List[Staff]
+    productions: List[Production]

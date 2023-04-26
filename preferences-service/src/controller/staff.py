@@ -1,5 +1,5 @@
 import model
-from schema import LikeStaff, UserBase
+from schema import LikeStaff, UserBase, Staff
 from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy.exc import IntegrityError
@@ -18,7 +18,7 @@ def create_staff_preference(preferences: List[LikeStaff], db: Session):
 
 def get_staff_preferences_by_user(uid:int, db:Session):
     result = db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user==uid).all()
-    return result
+    return [Staff(uid=staff.uid, name=staff.name, job=staff.job) for staff in result]
 
 def delete_staff_preference(preferences:LikeStaff,db:Session):
     db.query(model.LikeStaff).filter(model.LikeStaff.id_user==preferences.id_user).filter(model.LikeStaff.id_staff==preferences.id_staff).delete()
@@ -38,5 +38,5 @@ def update_staff_preference(old_preferences: LikeStaff,new_preferences:LikeStaff
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Staff not found.")
     
 def get_staff_preference_by_group(users:List[UserBase], db: Session):
-    result= db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(members)).all()
+    result= db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(users)).all()
     return result
