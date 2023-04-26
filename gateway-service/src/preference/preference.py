@@ -9,7 +9,7 @@ import requests
 import json
 load_dotenv()
 
-PREFERENCES_URL=os.getenv("PREFERENCES_URL")
+PREFERENCES_URL=os.getenv("PREFERENCE_URL")
 GROUP_URL = os.getenv("GROUP_URL")
 
 router = APIRouter(
@@ -17,24 +17,41 @@ router = APIRouter(
     tags=['preferences']
 )
 
+@router.get("/staff")
+def get_staff_preference(token: Annotated[TokenData,Depends(get_current_user)]):
+    db_preferences = requests.get(f"{PREFERENCES_URL}/staff/like/all", params={"uid":token.uid})
+    db_preferences.raise_for_status()
+    return db_preferences.json()
+@router.get("/production")
+def get_production_preference(token: Annotated[TokenData,Depends(get_current_user)]):
+    db_preferences = requests.get(f"{PREFERENCES_URL}/production/like/all", params={"uid":token.uid})
+    db_preferences.raise_for_status()
+    return db_preferences.json()
+
+@router.get('/genre')
+def get_genre_preference(token: Annotated[TokenData,Depends(get_current_user)]):
+    print("test")
+    db_preferences = requests.get(f"{PREFERENCES_URL}/genre/like/all", params={"uid":token.uid})
+    db_preferences.raise_for_status()
+    return db_preferences.json()
 @router.post("/genre")
 def create_genre_preference(genres: List[GenreBase],token: Annotated[TokenData, Depends(get_current_user)]):
     db_preferences = [Preferences(id_user=int(token.uid), id_genre=genre.uid).dict() for genre in genres]
-    response =  requests.post(f"{PREFERENCES_URL}/genre/like", data= json.dump(db_preferences))
+    response =  requests.post(f"{PREFERENCES_URL}/genre/like", data= json.dumps(db_preferences))
     response.raise_for_status()
     response.json()
 
 @router.post("/production")
 def create_production_preference(productions: List[ProductionBase],token: Annotated[TokenData, Depends(get_current_user)]):
     db_productions = [LikeProduction(id_user=int(token.uid), id_production=production.uid).dict() for production in productions]
-    response =  requests.post(f"{PREFERENCES_URL}/production/like", data= json.dump(db_productions))
+    response =  requests.post(f"{PREFERENCES_URL}/production/like", data= json.dumps(db_productions))
     response.raise_for_status()
     response.json()
 
 @router.post("/staff")
 def create_staff_preference(staffs: List[StaffBase],token: Annotated[TokenData, Depends(get_current_user)]):
     db_staffs = [LikeStaff(id_user=int(token.uid), id_staff=staff.uid).dict() for staff in staffs]
-    response =  requests.post(f"{PREFERENCES_URL}/staff/like", data= json.dump(db_staffs))
+    response =  requests.post(f"{PREFERENCES_URL}/staff/like", data= json.dumps(db_staffs))
     response.raise_for_status()
     response.json()
 
@@ -61,6 +78,7 @@ def delete_production_preference(production: ProductionBase, token: Annotated[To
 
 @router.get("/user")
 def get_user_preference(token: Annotated[TokenData,Depends(get_current_user)]):
+    print("test")
     response = requests.get(f"{PREFERENCES_URL}/user/like", params={"uid":int(token.uid)})
     response.raise_for_status()
     return response.json()
@@ -73,6 +91,6 @@ def get_group_preference(group: GroupBase,token: Annotated[TokenData,Depends(get
     if not (int(token.uid) in users_id):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access Denied.")
     
-    result = requests.post(f"{PREFERENCES_URL}/group/like", data=json.dump(users_id))
+    result = requests.post(f"{PREFERENCES_URL}/group/like", data=json.dumps(users_id))
     result.raise_for_status()
     return result.json()

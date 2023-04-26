@@ -62,7 +62,7 @@ def create_staff_relationship(relations: List[LikeStaff],db: Session= Depends(ge
 
 @app.get("/staff/like/all")
 def get_staff_preferences_by_user(uid:int, db:Session= Depends(get_db)):
-    result = ctrl.get_staffs_preferences_by_user(uid,db)
+    result = ctrl.get_staff_preferences_by_user(uid,db)
     db.close()
     return result
 
@@ -106,7 +106,7 @@ def get_group_preference(users:List[UserBase],db:Session=Depends(get_db)):
     db.close()
     return Prediction(genres=genres,staffs=staffs, productions=productions)
 
-@app.get("user/like")
+@app.get("/user/like")
 def get_user_preference(uid:int,db:Session=Depends(get_db)):
     genres= ctrl.get_genre_preferences_by_user(uid,db)
     productions = ctrl.get_production_preferences_by_user(uid,db)

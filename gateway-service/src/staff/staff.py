@@ -18,5 +18,5 @@ router = APIRouter(
 
 @router.get('/all')
 def get_prod(token: Annotated[TokenData,Depends(get_current_user)]):
-    db_prod= requests.get(f"{MOVIE_URL}/movie/all")
+    db_prod= requests.get(f"{MOVIE_URL}/staff/all")
     return db_prod.json()
