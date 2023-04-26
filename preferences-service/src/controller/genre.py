@@ -1,5 +1,5 @@
 import model
-from schema import Preferences, UserBase
+from schema import Preferences, UserBase, Genre
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import List
@@ -16,7 +16,7 @@ def create_genre_preference(preferences: List[Preferences], db: Session):
 
 def get_genre_preferences_by_user(uid:int, db:Session):
     result = db.query(model.Genre).join(model.Preferences).filter(model.Preferences.id_user==uid).all()
-    return result
+    return [Genre(uid=genre.uid, name=genre.name) for genre in result]
 
 def delete_genre_preference(preferences:Preferences,db:Session):
     db.query(model.Preferences).filter(model.Preferences.id_user==preferences.id_user).filter(model.Preferences.id_genre==preferences.id_genre).delete()

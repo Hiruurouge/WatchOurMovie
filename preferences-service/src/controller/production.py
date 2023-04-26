@@ -1,5 +1,5 @@
 import model
-from schema import LikeProduction, UserBase
+from schema import LikeProduction, UserBase, Production
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi import HTTPException, status
@@ -18,7 +18,7 @@ def create_production_preference(preferences: List[LikeProduction], db: Session)
 
 def get_production_preferences_by_user(uid:int, db:Session):
     result = db.query(model.Production).join(model.LikeProduction).filter(model.LikeProduction.id_user==uid).all()
-    return result
+    return [Production(uid=production.uid, name=production.name) for production in result]
 
 def delete_production_preference(preferences:LikeProduction,db:Session):
     db.query(model.LikeProduction).filter(model.LikeProduction.id_user==preferences.id_user).filter(model.LikeProduction.id_production==preferences.id_production).delete()

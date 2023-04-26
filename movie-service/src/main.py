@@ -137,31 +137,31 @@ def update_genre(genre: Genre, db:Session=Depends(get_db)):
     db.close()
 
 @app.get("/movie", tags="movie")
-def get_staff(uid:int, db:Session=Depends(get_db)):
-    result = ctrl.get_staff(StaffBase(uid=uid),db)
+def get_movie(uid:int, db:Session=Depends(get_db)):
+    result = ctrl.get_movie(MovieId(uid=uid),db)
     db.close()
     return result
 
 @app.get("/movie/all", tags="movie")
-def get_staff(db:Session=Depends(get_db)):
-    result = ctrl.get_all_staffs(db)
+def get_movie(db:Session=Depends(get_db)):
+    result = ctrl.get_all_movies(db)
     db.close()
     return result
 
 @app.post("/movie", tags="movie")
-def create_staff(movie: Movie,db: Session = Depends(get_db)):
-    result = ctrl.create_staff(movie, db)
+def create_movie(movie: Movie,db: Session = Depends(get_db)):
+    result = ctrl.create_movie(movie, db)
     db.close()
     return result
 
 @app.delete("/movie", tags="movie")
-def delete_staff(movie:MovieId, db: Session= Depends(get_db)):
-    ctrl.delete_staff(movie, db)
+def delete_movie(movie:MovieId, db: Session= Depends(get_db)):
+    ctrl.delete_movie(movie, db)
     db.close()
 
 @app.patch("/movie", tags="movie")
-def update_staff(movie:Movie, db:Session=Depends(get_db)):
-    ctrl.update_staff(movie, db)
+def update_movie(movie:Movie, db:Session=Depends(get_db)):
+    ctrl.update_movie(movie, db)
     db.close()
 
 @app.post("/watch")

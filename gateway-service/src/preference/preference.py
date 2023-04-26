@@ -87,10 +87,9 @@ def get_user_preference(token: Annotated[TokenData,Depends(get_current_user)]):
 def get_group_preference(group: GroupBase,token: Annotated[TokenData,Depends(get_current_user)]):
     users_response = requests.get(f"{GROUP_URL}/users" ,params={"uid":group.uid}) 
     users = users_response.json()
-    users_id: List[UserBase] = [UserBase(uid = int(x['uid'])).dict() for x in users]
+    users_id: list(int) = [int(x['uid']) for x in users]
     if not (int(token.uid) in users_id):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access Denied.")
-    
-    result = requests.post(f"{PREFERENCES_URL}/group/like", data=json.dumps(users_id))
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access Denied.")   
+    result = requests.post(f"{PREFERENCES_URL}/group/like", data=json.dumps([UserBase(uid=id).dict() for id in users_id]))
     result.raise_for_status()
     return result.json()
