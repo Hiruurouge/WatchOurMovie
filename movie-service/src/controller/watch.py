@@ -28,4 +28,3 @@ def update_visualize_relation(old_relation:Visualize,new_relation:Visualize, db:
     db.commit()
     db.refresh(db_relation)
     return db_relation
-

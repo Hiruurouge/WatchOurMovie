@@ -56,6 +56,7 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.6"
+        
   preference-service:
     build: ./preferences-service
     ports:
@@ -77,17 +78,6 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.9"
-
-  visualize-service:
-    build: ./visualize-service
-    ports:
-      - 3220:3217
-    volumes:
-      - ./schema:/code/schema
-      - ./model:/code/model
-    networks:
-      backend:
-        ipv4_address: "10.5.0.8"
 
   tmdb-service:
     build: ./tmdb
