@@ -2,13 +2,20 @@ import model
 from schema import Genre, GenreBase
 from sqlalchemy.orm import Session
 from typing import List
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException, status
 
 def create_genre(genre:Genre, db:Session):
     db_genre= model.Genre(uid=genre.uid, name=genre.name)
-    db.add(db_genre)
-    db.commit()
-    db.refresh(db_genre)
-    return db_genre.uid
+    try: 
+        db.add(db_genre)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Genre already exists.")
+    else: 
+        db.commit()
+        db.refresh(db_genre)
+        return db_genre.uid
 
 def create_genres(genres:List[Genre],db:Session):
     db_genres = [model.Genre(uid=genre.uid, name=genre.name) for genre in genres]

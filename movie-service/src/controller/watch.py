@@ -2,12 +2,19 @@ import model
 from schema import Visualize
 from sqlalchemy.orm import Session
 from typing import List
+from sqlalchemy.exc  import IntegrityError
+from fastapi import HTTPException, status
 
 def create_visualize_relation(relations: List[Visualize], db: Session):
     db_visualize=[model.Visualize(id_user= relation.id_user, id_movie=relation.id_user) for relation in relations]
-    db.add_all(db_visualize)
-    db.commit()
-    return relations
+    try: 
+        db.add_all(db_visualize)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Relationship already exist.")
+    else:
+        db.commit()
+        return relations
 
 def get_movies_seen_by_user(uid:int, db:Session):
     result = db.query(model.Movie).join(model.Visualize).filter(model.Visualize.id_user==uid).all()
