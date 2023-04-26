@@ -1,18 +1,24 @@
 import model
-from schema import Group, GroupBase, Belong, Prediction
+from schema import Group, GroupBase, Belong
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import List
-
+from fastapi import HTTPException, status
+from sqlalchemy.exc import IntegrityError
 
 def create_group(group:Group, db:Session):
-    db_group=model.Group(group_name=group.group_name, owner=group.owner)
-    db.add(db_group)
-    db.commit()
-    db.refresh(db_group)
-    belong= Belong(id_group=db_group.uid, id_user=db_group.owner)
-    add_to_group([belong],db)
-    return db_group.uid
+    try:
+        db_group=model.Group(group_name=group.group_name, owner=group.owner)
+        db.add(db_group)
+    except IntegrityError: 
+        db.rollback()
+        raise HTTPException(status_code="Group already exists.")
+    else:
+        db.commit()
+        db.refresh(db_group)
+        belong= Belong(id_group=db_group.uid, id_user=db_group.owner)
+        add_to_group([belong],db)
+        return db_group.uid
 
 def delete_group(group: GroupBase, db:Session):
     db.query(model.Group).filter(model.Group.uid==group.uid).delete()
@@ -40,8 +46,13 @@ def update_group(group:Group, db:Session):
 
 def add_to_group(belong_list:List[Belong], db:Session):
     db_belong= [model.Belong(id_user=belong.id_user,id_group=belong.id_group) for belong in belong_list]
-    db.add_all(db_belong)
-    db.commit()
+    try: 
+        db.add_all(db_belong)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already in this group.")
+    else:
+        db.commit()
     
 
 def quit_group(belong:Belong, db:Session):

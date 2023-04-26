@@ -1,13 +1,21 @@
 import model
 from schema import MovieId, Movie
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException, status
 
 def create_movie(movie:Movie, db:Session):
     db_movie= model.Movie(uid=movie.uid, title=movie.title,release_date=movie.release_date, overview=movie.overview, poster=movie.poster, popularity=movie.popularity )
-    db.add(db_movie)
-    db.commit()
-    db.refresh(db_movie)
-    return db_movie.uid
+    try: 
+        db.add(db_movie)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Movie already exists.")
+    else:
+        db.commit()
+        db.refresh(db_movie)
+        return db_movie.uid
+    
     
 def get_all_movies(db:Session):
     result = db.query(model.Movie).all()
