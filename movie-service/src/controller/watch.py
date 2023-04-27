@@ -9,11 +9,11 @@ def create_visualize_relation(relations: List[Visualize], db: Session):
     db_visualize=[model.Visualize(id_user= relation.id_user, id_movie=relation.id_movie) for relation in relations]
     try: 
         db.add_all(db_visualize)
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Relationship already exist.")
     else:
-        db.commit()
         return relations
 
 def get_movies_seen_by_user(uid:int, db:Session):

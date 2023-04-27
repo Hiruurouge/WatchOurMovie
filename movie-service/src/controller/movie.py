@@ -9,11 +9,11 @@ def create_movie(movie:Movie, db:Session):
     db_movie= model.Movie(uid=movie.uid, title=movie.title,release_date=movie.release_date, overview=movie.overview, poster=movie.poster, popularity=movie.popularity )
     try: 
         db.add(db_movie)
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Movie already exists.")
     else:
-        db.commit()
         db.refresh(db_movie)
         return db_movie.uid
     

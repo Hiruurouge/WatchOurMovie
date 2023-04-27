@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
@@ -14,11 +15,11 @@ def create_user(auth: schema.AuthCredentials,db:Session):
     db_auth = model.Auth(email= auth.email, password = auth.password)
     try: 
         db.add(db_auth)
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists.")
     else:
-        db.commit()
         db.refresh(db_auth)
         return db_auth.uid
 
