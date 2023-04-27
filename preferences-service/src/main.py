@@ -104,7 +104,9 @@ def get_group_preference(users:List[UserBase],db:Session=Depends(get_db)):
     productions = ctrl.get_production_preference_by_group(users,db)
     staffs = ctrl.get_staff_preference_by_group(users,db)
     db.close()
-    return Prediction(genres=genres,staffs=staffs, productions=productions)
+    result = Prediction(genres=genres,staffs=staffs, productions=productions)
+    print(result)
+    return(result)
 
 @app.get("/user/like")
 def get_user_preference(uid:int,db:Session=Depends(get_db)):
