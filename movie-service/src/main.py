@@ -163,7 +163,11 @@ def delete_movie(movie:MovieId, db: Session= Depends(get_db)):
 def update_movie(movie:Movie, db:Session=Depends(get_db)):
     ctrl.update_movie(movie, db)
     db.close()
-
+@app.get("/movie/random")
+def get_random_movies(db:Session=Depends(get_db)):
+    result= ctrl.get_random_movies(db)
+    db.close()
+    return result
 @app.post("/watch")
 def create_visualize_relationship(relations: List[Visualize],db: Session= Depends(get_db)):
     result = ctrl.create_visualize_relation(relations,db)

@@ -27,6 +27,9 @@ export class VisualizeService {
   getAllMovies():Observable<any>{
     return this.http.get<any>(`${this.movieUrl}/all`, { headers: this.getHeaders() });
   }
+  getRandMovies():Observable<any>{
+    return this.http.get<any>(`${this.movieUrl}/random`, { headers: this.getHeaders() });
+  }
   getMoviesSeenByUser(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/all`, { headers: this.getHeaders() });
   }

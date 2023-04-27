@@ -14,9 +14,9 @@ export class MovieListComponent implements OnInit {
   constructor(private visualizeService: VisualizeService) { }
 
   ngOnInit(): void {
-    this.visualizeService.getAllMovies().subscribe(movies => {
+    this.visualizeService.getRandMovies().subscribe(movies => {
       this.movies = movies;
-      this.filterMovies();
+      this.filterMovies()
     });
   }
 
@@ -26,18 +26,4 @@ export class MovieListComponent implements OnInit {
     });
   }
 
-
-  onMovieClick(movie: any): void {
-    this.visualizeService.createVisualizeRelationships(movie.uid).subscribe(() => {
-      this.filterMovies(); // Actualisation de la liste de films après la création de la relation visualize
-    });
-  }
-
-  movieSeen(movie: any): boolean {
-    let moviesSeen: number[] = [];
-    this.visualizeService.getMoviesSeenByUser().subscribe(movies => {
-      moviesSeen = movies.map((movie: { uid: any; }) => movie.uid);
-    });
-    return moviesSeen.includes(movie.uid);
-  }
 }

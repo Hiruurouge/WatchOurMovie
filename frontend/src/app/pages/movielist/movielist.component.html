@@ -1,12 +1,14 @@
-<div *ngFor="let movie of filteredMovies">
-  <div class="card" style="width: 18rem;">
-    <img [src]="movie.poster" class="card-img-top" alt="Movie poster">
-    <div class="card-body">
-      <h5 class="card-title">{{ movie.title }}</h5>
-      <p class="card-text">{{ movie.overview }}</p>
-      <button class="btn btn-primary" (click)="onMovieClick(movie)">
-        {{ movieSeen(movie) ? 'Déjà vu' : 'Je l\'ai vu' }}
-      </button>
+<div class="card-container">
+  <div class="card" *ngFor="let movie of filteredMovies">
+    <div class="card-image">
+      <img [src]="movie.poster"  alt="{{movie.poster}} Image">
+    </div>
+    <div class="card-content">
+      <h2 class="card-title">{{ movie.title}}</h2>
+      <p class="card-text">{{movie.release_date}}</p>
+      <p class="card-text">{{movie.overview}}</p>
     </div>
   </div>
+
 </div>
+

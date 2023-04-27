@@ -13,6 +13,10 @@ router = APIRouter(
 )
 
 @router.get("/all")
-def get_group(token :Annotated[TokenData,Depends(get_current_user)]):
+def get_all_movies(token :Annotated[TokenData,Depends(get_current_user)]):
     response = requests.get(f"{MOVIE_URL}/movie/all")
+    return response.json()
+@router.get("/random")
+def get_random_movies(token :Annotated[TokenData,Depends(get_current_user)]):
+    response = requests.get(f"{MOVIE_URL}/movie/random")
     return response.json()

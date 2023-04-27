@@ -3,6 +3,7 @@ from schema import MovieId, Movie
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
+from sqlalchemy.sql.expression import func
 
 def create_movie(movie:Movie, db:Session):
     db_movie= model.Movie(uid=movie.uid, title=movie.title,release_date=movie.release_date, overview=movie.overview, poster=movie.poster, popularity=movie.popularity )
@@ -20,6 +21,9 @@ def create_movie(movie:Movie, db:Session):
 def get_all_movies(db:Session):
     result = db.query(model.Movie).all()
     return result
+def get_random_movies(db: Session):
+    response = db.query(model.Movie).order_by(func.random()).limit(10).all()
+    return response
 
 def get_movie(movie: MovieId, db:Session):
     result = db.query(model.Movie).filter(model.Movie.uid==movie.uid).first()
