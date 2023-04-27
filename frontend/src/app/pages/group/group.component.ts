@@ -22,24 +22,22 @@ export class GroupComponent implements OnInit {
   newUserMail: any = {};
 
 
-  constructor(private groupService: GroupService, private userService:UserService, private changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private groupService: GroupService, private userService:UserService) {
+  }
 
   async ngOnInit(): Promise<void> {
+    console.log(this.userGroups)
     await this.userService.getUser()
     this.currentUser = this.userService.user
-    console.log(this.currentUser)
-    await this.groupService.getUserGroups().toPromise().then(
-      (groups) => {
-        this.userGroups = groups!;
-      },
-      (error: any) => {
-        console.log('Error retrieving user groups:', error);
-      }
-    );
-    this.userGroups.forEach(group => {
-      this.newUserMail[group.group_name] = '';
-    });
+    await this.groupService.getUserGroups().toPromise().then((groups)=>{
+      this.userGroups = []
+      this.userGroups=groups!
+      this.userGroups.forEach(group => {
+        this.newUserMail[group.group_name] = '';
+      });
+    })
   }
+
 
   createGroup(): void {
     if (this.newGroupName.trim() === '') {

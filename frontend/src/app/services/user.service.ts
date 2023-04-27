@@ -63,5 +63,9 @@ export class UserService {
     });
     return this.http.get<any>(this.apiUrl+'/mail?mail='+mail,{headers})
   }
+  clearUserData()
+  {
+    this.user = <UserI>{}
+  }
 
 }

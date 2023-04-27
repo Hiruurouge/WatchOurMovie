@@ -24,7 +24,7 @@ export class LoginComponent {
           const accessToken = response.access_token;
           const tokenType = response.token_type;
           this.userService.setToken({ accessToken, tokenType });
-          this.router.navigate(['/group'])
+          this.router.navigate(['/'])
         },
         error: (error) => {
           console.error(error);

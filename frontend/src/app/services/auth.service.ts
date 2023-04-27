@@ -23,7 +23,9 @@ export class AuthService {
     sessionStorage.setItem("accessToken", token.accessToken);
     this.isConnectedSubject.next(true);
   }
-
+  isLoggedIn(){
+    return !(this.token.accessToken == "")
+  }
   getToken() {
     return this.token;
   }

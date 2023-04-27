@@ -33,4 +33,11 @@ export interface MovieDataI {
   staffs: StaffI[];
   productions: ProductionI[];
 }
+export interface MovieI{
+  uid: number
+  release_date?:string
+  overview? : string
+  poster?: string
+  popularity?: number
+}
 

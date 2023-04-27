@@ -17,15 +17,17 @@ export class GroupService {
     this.token = authService.getAccessToken()!
   }
 
-   getUserGroups(): Observable<any[]> {
+  getUserGroups(): Observable<any[]> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     });
-     this.userService.getUser()
-    let user = this.userService.user
-    return this.http.get<any[]>(`${this.apiUrl}/all?uid=${user.uid}`,{headers});
+    this.userService.getUser();
+    let user = this.userService.user;
+    const options = { headers, cache: false }; // <-- ajout de cache: false
+    return this.http.get<any[]>(`${this.apiUrl}/all?uid=${user.uid}`, options);
   }
+
 
   createGroup(groupName: string): Observable<any> {
     let group:GroupI= {

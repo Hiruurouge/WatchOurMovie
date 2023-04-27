@@ -17,7 +17,11 @@ import {UserProfileComponent} from "./pages/user-profile/user-profile.component"
 import { NavbarComponent } from './pages/navbar/navbar.component';
 import { GenrePreferenceComponent } from './pages/genre-preference/genre-preference.component';
 import { ModalComponent } from './pages/modal/modal.component';
+import {RouterModule, Routes} from "@angular/router";
+import { MovieListComponent } from './pages/movielist/movielist.component';
 //import { TokenInterceptor } from '././services/group.service';
+
+let routes: Routes;
 
 @NgModule({
   declarations: [
@@ -32,14 +36,15 @@ import { ModalComponent } from './pages/modal/modal.component';
     UserProfileComponent,
     NavbarComponent,
     GenrePreferenceComponent,
-    ModalComponent
+    ModalComponent,
+    MovieListComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
   ],

@@ -3,7 +3,7 @@
     <ul>
       <li></li>
       <li routerLink="profile">Profil</li>
-      <li routerLink="group">Group</li>
+      <li  routerLink="group"  queryParamsHandling="merge" [queryParams]="{timestamp: currentDate}">Group</li>
       <li routerLink="/">Recommendation</li>
       <li routerLink="pref">Likes</li>
 

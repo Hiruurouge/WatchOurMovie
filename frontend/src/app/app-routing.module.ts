@@ -7,6 +7,8 @@ import {GroupComponent} from "./pages/group/group.component";
 import {UserProfileUpdateComponent} from "./pages/user-profile-update/user-profile-update.component";
 import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 import {GenrePreferenceComponent} from "./pages/genre-preference/genre-preference.component";
+import {AuthGuard} from "./guard/auth.guard";
+import {MovieListComponent} from "./pages/movielist/movielist.component";
 
 const routes: Routes = [
   { path: '', component:PrefFormComponent},
@@ -15,7 +17,8 @@ const routes: Routes = [
   {path:'group',component:GroupComponent},
   {path:'updateUser',component:UserProfileUpdateComponent},
   {path:'profile',component:UserProfileComponent},
-  {path:'pref',component:GenrePreferenceComponent}
+  {path:'pref',component:GenrePreferenceComponent},
+  {path:'visu',component:MovieListComponent}
 ];
 
 @NgModule({
