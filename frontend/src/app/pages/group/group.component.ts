@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { GroupService } from './../../services/group.service';
 import {GroupI, UserI} from "../../interface/wom";
 import {UserService} from "../../services/user.service";
+import {group} from "@angular/animations";
 
 @Component({
   selector: 'app-group',
@@ -18,20 +19,26 @@ export class GroupComponent implements OnInit {
   newGroupName: string = '';
   newGroupErrorMessage: string = '';
   currentUser: UserI = <UserI>{};
+  newUserMail: any = {};
+
+
   constructor(private groupService: GroupService, private userService:UserService, private changeDetectorRef: ChangeDetectorRef) { }
 
   async ngOnInit(): Promise<void> {
     await this.userService.getUser()
     this.currentUser = this.userService.user
     console.log(this.currentUser)
-    this.groupService.getUserGroups().subscribe(
-      (groups: any[]) => {
-        this.userGroups = groups;
+    await this.groupService.getUserGroups().toPromise().then(
+      (groups) => {
+        this.userGroups = groups!;
       },
       (error: any) => {
         console.log('Error retrieving user groups:', error);
       }
     );
+    this.userGroups.forEach(group => {
+      this.newUserMail[group.group_name] = '';
+    });
   }
 
   createGroup(): void {
@@ -132,8 +139,16 @@ getGroupMembers(group: any)
     this.isMembersModalOpen = true
   })
 }
-closeMembersModal()
-{
-  this.isMembersModalOpen =false
-}
+  closeMembersModal()
+    {
+      this.isMembersModalOpen =false
+    }
+  async addGroupMember(group:any,mail:any)
+  {
+      let userId
+      await this.userService.getUserByMail(mail).toPromise().then((res)=>{
+        userId=res
+        this.groupService.addUser(group,userId).toPromise().then(()=> console.log("done"))
+      })
+  }
 }

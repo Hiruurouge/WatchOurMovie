@@ -12,7 +12,7 @@ export class GenrePreferenceService {
   private productionUrl = 'http://localhost:3212/api/like/production';
   private staffUrl = 'http://localhost:3212/api/like/staff';
   private groupUrl = 'http://localhost:3212/api/like/group';
-
+  private userUrl ='http://localhost:3212/api/like/user';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getHeaders(): HttpHeaders {
@@ -29,6 +29,18 @@ export class GenrePreferenceService {
     };
     return this.http.get<any>(`${this.baseUrl}`, requestOptions);
   }
+  getUserPreferences(): Observable<any> {
+    const requestOptions = {
+      headers: this.getHeaders()
+    };
+    return this.http.get<any>(`${this.userUrl}`, requestOptions);
+  }  getGroupPreferences(uid:any): Observable<any> {
+    const requestOptions = {
+      headers: this.getHeaders()
+    };
+    return this.http.post<any>(`${this.groupUrl}`,{"uid":uid}, requestOptions);
+  }
+
 
   addGenrePreference(genres: GenreI): Observable<any> {
     const requestOptions = {

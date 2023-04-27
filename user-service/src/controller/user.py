@@ -38,4 +38,6 @@ def update_user(db:Session, user: User):
 def get_user(db:Session, user: UserBase):
     db_user=db.query(model.User).filter(model.User.uid==user.uid).first()
     return db_user
-
+def get_user_by_mail(db:Session, mail: str):
+    db_user=db.query(model.User).join(model.Auth).filter(model.Auth.email==mail).first()
+    return db_user.uid

@@ -57,3 +57,14 @@ def get_user(uid: int, db:Session=Depends(get_db)):
         )
     db.close()
     return user
+@app.get('/user/mail', status_code=200)
+def get_user(mail: str, db:Session=Depends(get_db)):
+    try:  
+        user = ctrl.get_user_by_mail(db,mail)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ressource not found."
+        )
+    db.close()
+    return user

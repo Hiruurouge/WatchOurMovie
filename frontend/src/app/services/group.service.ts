@@ -88,6 +88,15 @@ export class GroupService {
     };
     return this.http.get<any>("http://localhost:3212/api/group/users?uid="+group.uid, { headers });
   }
+    addUser(group:any,uid:number) {
+      const accessToken = this.authService.getAccessToken();
+      const headers = {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      };
+      return this.http.post<any>(this.apiUrl+'/add', { "users": [ { "uid": uid } ], "group": { "uid": group.uid } }, { headers });
+    }
 
 }
 

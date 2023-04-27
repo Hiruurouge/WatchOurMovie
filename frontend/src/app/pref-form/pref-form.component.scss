@@ -1,37 +1,60 @@
-.response-container {
-    display: flex;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    margin-bottom: 20px;
+.recommendation-container {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
-.my-img-container {
-    position: relative;
-    padding-top: 50%;
-}
-.my-img-container:before {
-    content: " ";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80px;
-    height: 80px;
-    border: 2px solid red;
-    border-color: transparent red transparent red;
-    border-radius: 50%;
-    animation: loader 1s linear infinite;
-}
-@keyframes loader {
-    0% {
-    transform: translate(-50%,-50%) rotate(0deg);
-    }
-    100% {
-    transform: translate(-50%,-50%) rotate(360deg);
-    }
+.recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.filler {
-    width: 100px;
+.movie-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  overflow: hidden;
+  width: 300px;
+}
+
+.movie-card img {
+  height: 400px;
+  object-fit: cover;
+}
+
+.movie-details {
+  padding: 20px;
+}
+
+.movie-details h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.movie-details p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
 }

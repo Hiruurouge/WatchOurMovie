@@ -1,48 +1,21 @@
- <div>
-  <form [formGroup]="prefForm" (ngSubmit)="onSubmit()">
-    <label>Genres:</label>
-    <div formArrayName="genres">
-      <div *ngFor="let skill of genres.controls; let i=index">
-        <input id="genre-{{ i }}" type="text" [formControlName]="i">
-        <button type="button" (click)="removeGenre(i)">Remove</button>
-      </div>
-      <button type="button" (click)="addGenre()">+ Add another genre</button>
+<div class="recommendation-container">
+  <div class="recommendation-header">
+    <h2>Films recommandés</h2>
+    <div>Par groupe:  <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
+     <option *ngFor="let group of groups" [value]="group.uid">{{ group.group_name }}</option>
+    </select>
     </div>
+    <button class="btn btn-success" (click)="getUserRec()">Pour moi</button>
+  </div>
 
-    <label>Realisateurs:</label>
-    <div formArrayName="realisateurs">
-      <div *ngFor="let skill of realisateurs.controls; let i=index">
-        <input id="realisateur-{{ i }}" type="text" [formControlName]="i">
-        <button type="button" (click)="removeRealisateur(i)">Remove</button>
+  <div class="movie-cards">
+    <div class="movie-card" *ngFor="let movie of recommendedMovies">
+      <img [src]="movie.poster" alt="Affiche du film {{ movie.title }}">
+      <div class="movie-details">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genres.join(', ') }}</p>
+        <p>{{ movie.overview }}</p>
       </div>
-      <button type="button" (click)="addRealisateur()">+ Add another realisateur</button>
     </div>
-
-    <label>Maisons de production:</label>
-    <div formArrayName="maisons_de_production">
-      <div *ngFor="let skill of maisons_de_production.controls; let i=index">
-        <input id="maisons_de_production-{{ i }}" type="text" [formControlName]="i">
-        <button type="button" (click)="removeMaisonDeProduction(i)">Remove</button>
-      </div>
-      <button type="button" (click)="addMaisonDeProduction()">+ Add another maisons de production</button>
-    </div>
-  
-    <p>
-      <button (click)="clicked = true; data = ''" type="submit">Submit</button>
-    </p>
-    
-  </form>
-
-  <section class="response" *ngIf="data != '' || clicked">
-    <div class="response-container">
-      <div *ngIf="clicked && data == ''">
-        <div class="filler"></div>
-        <div class="my-img-container">
-        </div>
-      </div>
-      <p *ngIf="data != ''">
-        {{data}}
-      </p>
-    </div>
-  </section>
-</div> 
+  </div>
+</div>

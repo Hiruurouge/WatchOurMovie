@@ -34,6 +34,8 @@ def delete_user(token:Annotated[TokenData, Depends(get_current_user)]):
     user= AuthId(uid=token.uid)
     result = requests.delete(AUTH_URL, data=user.json())
     return result.status_code
-
-
+@router.get('/mail')
+def get_user_by_mail(mail:str):
+    result = requests.get(USER_URL +'/mail',params={'mail':mail})
+    return result.json()
    

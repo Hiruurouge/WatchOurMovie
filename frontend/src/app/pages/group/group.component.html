@@ -46,6 +46,10 @@
       </div>
       <div class="card-content">
         <h2 class="card-title">{{ group.group_name }}</h2>
+        <div *ngIf="group.owner === currentUser.uid">
+          <input type="email" placeholder="Ajouter un utilisateur" [(ngModel)]="newUserMail[group.group_name]">
+          <button  (click)="addGroupMember(group, newUserMail[group.group_name])">Ajouter</button>
+        </div>
         <div class="card-actions">
           <button *ngIf="group.owner === currentUser.uid" (click)="openEditModal(group)">Modifier</button>
           <button (click)="getGroupMembers(group)" >Members</button>

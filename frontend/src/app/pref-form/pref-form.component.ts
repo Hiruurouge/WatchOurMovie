@@ -2,6 +2,10 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 import { AuthService } from '../services/auth.service';
+import {GenrePreferenceService} from "../services/genre-preference.service";
+import {GenreI} from "../interface/wom";
+import {GroupService} from "../services/group.service";
+import {PredictionService} from "../services/prediction.service";
 
 @Component({
   selector: 'app-pref-form',
@@ -9,80 +13,42 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./pref-form.component.scss']
 })
 export class PrefFormComponent {
-  prefForm: FormGroup;
+  recommendedMovies: any[] = []; // variable pour stocker les films recommandés
+  selectedGroup: any
+  groups: any[] = []
+  constructor(private preferencesService: GenrePreferenceService,
+              private groupService: GroupService,
+              private predictionService: PredictionService) { }
 
-  clicked: boolean = false;
-
-  data: string = "";
-
-  constructor(private fb:FormBuilder, private http: HttpClient, private auth: AuthService) {
-    this.prefForm = this.fb.group({
-      genres: this.fb.array([
-        this.fb.control('')
-      ]),
-      realisateurs: this.fb.array([
-        this.fb.control('')
-      ]),
-      maisons_de_production: this.fb.array([
-        this.fb.control('')
-      ]),
+  ngOnInit(): void {
+    // récupérer les préférences de l'utilisateur et les films recommandés pour l'utilisateur
+    this.preferencesService.getUserPreferences().subscribe(userPreferences => {
+      this.predictionService.getRecommendation(userPreferences).subscribe(recommendedMovies => {
+        this.recommendedMovies = recommendedMovies;
+      });
+    });
+    this.groupService.getUserGroups().subscribe((res)=>this.groups=res)
+  }
+  async getUserRec(){
+    await this.preferencesService.getUserPreferences().toPromise().then(userPreferences => {
+      this.predictionService.getRecommendation(userPreferences).toPromise().then(recommendedMovies => {
+        this.recommendedMovies = recommendedMovies;
+        console.log(this.recommendedMovies)
+      });
     });
   }
-
-  get genres() : FormArray {
-    return this.prefForm.get("genres") as FormArray
+  // fonction pour récupérer les films recommandés pour un groupe d'utilisateurs en fonction de ses préférences
+  getGroupRecommendations(uid: any): void {
+    this.preferencesService.getGroupPreferences(uid).subscribe(groupPreferences => {
+      this.predictionService.getRecommendation(groupPreferences).subscribe(recommendedMovies => {
+        this.recommendedMovies = recommendedMovies;
+      });
+    });
+  }
+  onGroupChange(){
+    console.log(this.selectedGroup)
+    this.getGroupRecommendations(this.selectedGroup)
   }
 
-  addGenre() {
-    this.genres.push(this.fb.control(''));
-  }
 
-  removeGenre(i:number) {
-    console.log(i);
-    this.genres.removeAt(i);
-  }
-
-  get realisateurs() : FormArray {
-    return this.prefForm.get("realisateurs") as FormArray
-  }
-
-  addRealisateur() {
-    this.realisateurs.push(this.fb.control(''));
-  }
-
-  removeRealisateur(i:number) {
-    this.realisateurs.removeAt(i);
-  }
-
-  get maisons_de_production() : FormArray {
-    return this.prefForm.get("maisons_de_production") as FormArray
-  }
-
-  addMaisonDeProduction() {
-    this.maisons_de_production.push(this.fb.control(''));
-  }
-
-  removeMaisonDeProduction(i:number) {
-    this.maisons_de_production.removeAt(i);
-  }
-
-  async onSubmit() {
-    const headerDict = {
-      'Accept': '*/*',
-      'Authorization': 'Bearer ' + this.auth.getAccessToken()
-    }
-    
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders(headerDict), 
-    };
-    
-    await this.http.get<HttpResponse<string>>("http://localhost:3212/predict/", requestOptions)
-    .subscribe((rep) => {
-      this.data = JSON.stringify(rep);
-    })
-  }
-
-  itemIdentity(index: number, item: Object) {
-    return index;
-  }
 }
