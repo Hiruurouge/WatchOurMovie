@@ -12,6 +12,10 @@ services:
     networks:
       backend: 
         ipv4_address: "10.5.0.2"
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 10s
+        retries: 6
 
   user-service:
     build: ./user-service
@@ -93,6 +97,9 @@ services:
   reco-service:
     build: ./reco_service
     depends_on:
+      db: 
+        condition: service_healthy
+    links:
       - db
     ports:
       - 3217:3220
