@@ -38,5 +38,6 @@ def update_production_preference(old_preferences: LikeProduction,new_preferences
     return db_preferences
 
 def get_production_preference_by_group(users: List[UserBase], db: Session):
-    result = db.query(model.Production).join(model.LikeProduction).filter(model.LikeProduction.id_user.in_(users)).all()
-    return result
+    users_id=[int(user.uid) for user in users]
+    result = db.query(model.Production).join(model.LikeProduction).filter(model.LikeProduction.id_user.in_(users_id)).all()
+    return [Production(uid=production.uid, name=production.name) for production in result]

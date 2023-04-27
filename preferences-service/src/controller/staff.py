@@ -38,5 +38,6 @@ def update_staff_preference(old_preferences: LikeStaff,new_preferences:LikeStaff
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Staff not found.")
     
 def get_staff_preference_by_group(users:List[UserBase], db: Session):
-    result= db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(users)).all()
-    return result
+    users_id=[int(user.uid) for user in users]
+    result= db.query(model.Staff).join(model.LikeStaff).filter(model.LikeStaff.id_user.in_(users_id)).all()
+    return [Staff(uid=staff.uid, name=staff.name, job=staff.job) for staff in result]

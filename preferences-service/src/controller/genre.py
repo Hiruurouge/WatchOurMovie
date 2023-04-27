@@ -38,5 +38,6 @@ def update_genre_preference(old_preferences: Preferences,new_preferences:Prefere
     return db_preferences
 
 def get_genre_preference_by_group(users: List[UserBase], db: Session):
-    result= db.query(model.Genre).join(model.Preferences).filter(model.Preferences.id_user.in_(users)).all()
-    return result
+    users_id=[int(user.uid) for user in users]
+    result= db.query(model.Genre).join(model.Preferences).filter(model.Preferences.id_user.in_(users_id)).all()
+    return [Genre(uid=genre.uid, name=genre.name) for genre in result]
