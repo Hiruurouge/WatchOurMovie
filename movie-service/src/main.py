@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm  import Session, sessionmaker
-from schema import  ProductionBase, Production, Staff, StaffBase, Genre, GenreBase, MovieId, Movie, Visualize
+from schema import  ProductionBase, Production, Staff, StaffBase, Genre, GenreBase, MovieId, Movie, Visualize, UserBase
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 from typing import List
@@ -32,31 +32,31 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/production", tags="production")
+@app.get("/production")
 def get_production(production:int, db:Session=Depends(get_db)):
     result = ctrl.get_production(ProductionBase(uid=production),db)
     db.close()
     return result
 
-@app.get("/production/all", tags="production")
+@app.get("/production/all")
 def get_productions(db:Session=Depends(get_db)):
     result = ctrl.get_all_productions(db)
     db.close()
     return result
 
-@app.post("/production", tags="production")
+@app.post("/production")
 def create_production(production: Production,db: Session = Depends(get_db)):
     result = ctrl.create_production(production, db)
     db.close()
     return result
 
-@app.post("/production/multiple", tags="production")
+@app.post("/production/multiple")
 def create_productions(productions: List[Production], db:Session=Depends(get_db)):
     result = ctrl.create_productions(productions, db)
     db.close()
     return result
 
-@app.delete("/production", tags="production")
+@app.delete("/production")
 def delete_production(production:ProductionBase, db: Session= Depends(get_db)):
     ctrl.delete_production(production, db)
     db.close()
@@ -136,30 +136,30 @@ def update_genre(genre: Genre, db:Session=Depends(get_db)):
     ctrl.update_genre(genre, db)
     db.close()
 
-@app.get("/movie", tags="movie")
+@app.get("/movie")
 def get_movie(uid:int, db:Session=Depends(get_db)):
     result = ctrl.get_movie(MovieId(uid=uid),db)
     db.close()
     return result
 
-@app.get("/movie/all", tags="movie")
+@app.get("/movie/all")
 def get_movie(db:Session=Depends(get_db)):
     result = ctrl.get_all_movies(db)
     db.close()
     return result
 
-@app.post("/movie", tags="movie")
+@app.post("/movie")
 def create_movie(movie: Movie,db: Session = Depends(get_db)):
     result = ctrl.create_movie(movie, db)
     db.close()
     return result
 
-@app.delete("/movie", tags="movie")
+@app.delete("/movie")
 def delete_movie(movie:MovieId, db: Session= Depends(get_db)):
     ctrl.delete_movie(movie, db)
     db.close()
 
-@app.patch("/movie", tags="movie")
+@app.patch("/movie")
 def update_movie(movie:Movie, db:Session=Depends(get_db)):
     ctrl.update_movie(movie, db)
     db.close()
@@ -190,3 +190,8 @@ def update_visualize_relationship(new_relation:Visualize,old_relation:Visualize,
     ctrl.update_visualize_relation(new_relation=new_relation, old_relation=old_relation,db=db)
     db.close()
  
+@app.post("/watch/group")
+def get_movies_seen_by_group(users: List[UserBase], db:Session= Depends(get_db)):
+    result = ctrl.get_movies_seen_by_group(users,db)
+    db.close()
+    return result
