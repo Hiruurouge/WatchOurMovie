@@ -16,7 +16,10 @@ router = APIRouter(
 )
 
 @router.post('/')
-def get_recommendation(preferences: Prediction,token: Annotated[TokenData,Depends(get_current_user)]):
+def get_recommendation(preferences: Prediction,token: Annotated[TokenData,Depends(get_current_user)],groupId=None):
     headers = {'Content-Type': 'application/json', 'accept': 'application/json'}
-    response = requests.post(f"{RECO_URL}", headers=headers, data=preferences.json())
+    if groupId is None:
+        response = requests.post(f"{RECO_URL}"+"?userId="+token.uid, headers=headers, data=preferences.json())
+        return response.json()
+    response = requests.post(f"{RECO_URL}"+"?groupId="+groupId, headers=headers, data=preferences.json())
     return response.json()

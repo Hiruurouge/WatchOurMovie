@@ -1,5 +1,12 @@
+<div class="recommendation-header">
+  <h2>Your movies</h2>
+  <div>  <select style="margin-left: 5%;margin-bottom: 1%" [(ngModel)]="selectedList" (change)="onListChange()">
+    <option *ngFor="let list of lists" [value]="list">{{ list }}</option>
+  </select>
+  </div>
+</div>
 <div class="card-container">
-  <div class="card" *ngFor="let movie of filteredMovies">
+  <div class="card" *ngFor="let movie of displayList">
     <div class="card-image">
       <img [src]="movie.poster"  alt="{{movie.poster}} Image">
     </div>
@@ -7,8 +14,7 @@
       <h2 class="card-title">{{ movie.title}}</h2>
       <p class="card-text">{{movie.release_date}}</p>
       <p class="card-text">{{movie.overview}}</p>
+      <button *ngIf="selectedList==lists[1]" (click)="markAsSeen(movie.uid)">Vu</button>
     </div>
   </div>
-
 </div>
-
