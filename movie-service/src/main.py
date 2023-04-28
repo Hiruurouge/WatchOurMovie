@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm  import Session, sessionmaker
-from schema import  ProductionBase, Production, Staff, StaffBase, Genre, GenreBase, MovieId, Movie, Visualize, UserBase
+from schema import  ProductionBase, Production, Staff, StaffBase, Genre, GenreBase, MovieId, Movie, Visualize, UserBase, MovieBase
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 from typing import List
@@ -32,165 +32,172 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/production")
+@app.get("/production", tags=["production"])
 def get_production(production:int, db:Session=Depends(get_db)):
     result = ctrl.get_production(ProductionBase(uid=production),db)
     db.close()
     return result
 
-@app.get("/production/all")
+@app.get("/production/all", tags=["production"])
 def get_productions(db:Session=Depends(get_db)):
     result = ctrl.get_all_productions(db)
     db.close()
     return result
 
-@app.post("/production")
+@app.post("/production", tags=["production"])
 def create_production(production: Production,db: Session = Depends(get_db)):
     result = ctrl.create_production(production, db)
     db.close()
     return result
 
-@app.post("/production/multiple")
+@app.post("/production/multiple", tags=["production"])
 def create_productions(productions: List[Production], db:Session=Depends(get_db)):
     result = ctrl.create_productions(productions, db)
     db.close()
     return result
 
-@app.delete("/production")
+@app.delete("/production", tags=["production"])
 def delete_production(production:ProductionBase, db: Session= Depends(get_db)):
     ctrl.delete_production(production, db)
     db.close()
     
 
-@app.patch("/production", tags="production")
+@app.patch("/production", tags=["production"])
 def update_production(production: Production, db:Session=Depends(get_db)):
     ctrl.update_production(production, db)
     db.close()
 
-@app.get("/staff", tags="staff")
+@app.get("/staff", tags=["staff"])
 def get_staff(uid:int, db:Session=Depends(get_db)):
     result = ctrl.get_staff(StaffBase(uid=uid),db)
     db.close()
     return result
 
-@app.get("/staff/all", tags="staff")
+@app.get("/staff/all", tags=["staff"])
 def get_staff(db:Session=Depends(get_db)):
     result = ctrl.get_all_staffs(db)
     db.close()
     return result
 
-@app.post("/staff", tags="staff")
+@app.post("/staff", tags=["staff"])
 def create_staff(staff: Staff,db: Session = Depends(get_db)):
     result = ctrl.create_staff(staff, db)
     db.close()
     return result
 
-@app.post("/staff/multiple", tags="staff")
+@app.post("/staff/multiple", tags=["staff"])
 def create_staffs(staffs: List[Staff], db:Session=Depends(get_db)):
     result = ctrl.create_staffs(staffs, db)
     db.close()
     return result
 
-@app.delete("/staff", tags="staff")
+@app.delete("/staff", tags=["staff"])
 def delete_staff(staffs:StaffBase, db: Session= Depends(get_db)):
     ctrl.delete_staff(staffs, db)
     db.close()
     
 
-@app.patch("/staff", tags="staff")
+@app.patch("/staff", tags=["staff"])
 def update_staff(staff: Staff, db:Session=Depends(get_db)):
     ctrl.update_staff(staff, db)
     db.close()
-@app.get("/genre", tags="genre")
+@app.get("/genre", tags=["genre"])
 def get_genre(genre:int, db:Session=Depends(get_db)):
     result = ctrl.get_genre(GenreBase(uid=genre),db)
     db.close()
     return result
 
-@app.get("/genre/all", tags="genre")
+@app.get("/genre/all", tags=["genre"])
 def get_genres(db:Session=Depends(get_db)):
     result = ctrl.get_all_genres(db)
     db.close()
     return result
 
-@app.post("/genre", tags="genre")
+@app.post("/genre", tags=["genre"])
 def create_genre(genre: Genre,db: Session = Depends(get_db)):
     result = ctrl.create_genre(genre, db)
     db.close()
     return result
 
-@app.post("/genre/multiple")
+@app.post("/genre/multiple", tags=["genre"])
 def create_genres(genres: List[Genre], db:Session=Depends(get_db)):
     result = ctrl.create_genres(genres, db)
     db.close()
     return result
 
-@app.delete("/genre")
+@app.delete("/genre", tags=["genre"])
 def delete_genre(genre:GenreBase, db: Session= Depends(get_db)):
     ctrl.delete_genre(genre, db)
     db.close()
     
 
-@app.patch("/genre")
+@app.patch("/genre", tags=["genre"])
 def update_genre(genre: Genre, db:Session=Depends(get_db)):
     ctrl.update_genre(genre, db)
     db.close()
 
-@app.get("/movie")
+@app.get("/movie", tags=["movie"])
 def get_movie(uid:int, db:Session=Depends(get_db)):
     result = ctrl.get_movie(MovieId(uid=uid),db)
     db.close()
     return result
 
-@app.get("/movie/all")
+@app.get("/movie/title", tags=["movie"])
+def get_movie_by_title(title:str, db:Session=Depends(get_db)):
+    result = ctrl.get_movie_by_title(MovieBase(title=title),db)
+    db.close()
+    return result
+
+@app.get("/movie/all", tags=["movie"])
 def get_movie(db:Session=Depends(get_db)):
     result = ctrl.get_all_movies(db)
     db.close()
     return result
 
-@app.post("/movie")
+@app.post("/movie", tags=["movie"])
 def create_movie(movie: Movie,db: Session = Depends(get_db)):
     result = ctrl.create_movie(movie, db)
     db.close()
     return result
 
-@app.delete("/movie")
+@app.delete("/movie", tags=["movie"])
 def delete_movie(movie:MovieId, db: Session= Depends(get_db)):
     ctrl.delete_movie(movie, db)
     db.close()
 
-@app.patch("/movie")
+@app.patch("/movie", tags=["movie"])
 def update_movie(movie:Movie, db:Session=Depends(get_db)):
     ctrl.update_movie(movie, db)
     db.close()
-@app.get("/movie/random")
+
+@app.get("/movie/random", tags=["movie"])
 def get_random_movies(db:Session=Depends(get_db)):
     result= ctrl.get_random_movies(db)
     db.close()
     return result
-@app.post("/watch")
+@app.post("/watch", tags=["watch"])
 def create_visualize_relationship(relations: List[Visualize],db: Session= Depends(get_db)):
     result = ctrl.create_visualize_relation(relations,db)
     db.close()
     return result
 
-@app.get("/watch/all")
+@app.get("/watch/all", tags=["watch"])
 def get_movies_seen_by_user(uid:int, db:Session= Depends(get_db)):
     result = ctrl.get_movies_seen_by_user(uid,db)
     db.close()
     return result
 
-@app.delete("/watch")
+@app.delete("/watch", tags=["watch"])
 def delete_visualize_relationship(relation:Visualize,db:Session=Depends(get_db)):
     ctrl.delete_visualize_relation(relation,db)
     db.close()
 
-@app.patch("/watch")
+@app.patch("/watch", tags=["watch"])
 def update_visualize_relationship(new_relation:Visualize,old_relation:Visualize,db:Session=Depends(get_db)):
     ctrl.update_visualize_relation(new_relation=new_relation, old_relation=old_relation,db=db)
     db.close()
  
-@app.post("/watch/group")
+@app.post("/watch/group", tags=["watch"])
 def get_movies_seen_by_group(users: List[UserBase], db:Session= Depends(get_db)):
     result = ctrl.get_movies_seen_by_group(users,db)
     db.close()

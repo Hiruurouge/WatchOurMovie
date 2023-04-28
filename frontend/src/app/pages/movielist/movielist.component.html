@@ -4,6 +4,10 @@
     <option *ngFor="let list of lists" [value]="list">{{ list }}</option>
   </select>
   </div>
+  <div *ngIf="selectedList == lists[1]">
+    <input [(ngModel)]="search" type="text">
+    <button type="button" (click)="onClickSearch()">Search</button>
+  </div>
 </div>
 <div class="card-container">
   <div class="card" *ngFor="let movie of displayList">

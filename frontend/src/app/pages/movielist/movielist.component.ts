@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {VisualizeService} from "../../services/visualize.service";
+import { MovieI } from "../../interface/wom";
 
 @Component({
   selector: 'app-movie-list',
@@ -8,17 +9,18 @@ import {VisualizeService} from "../../services/visualize.service";
 })
 export class MovieListComponent implements OnInit {
 
-  movies: any[] = [];
-  filteredMovies: any[] = [];
+  movies: MovieI[] = [];
+  filteredMovies: MovieI[] = [];
   lists: string[] = ["What you watched","Tell us what you watched"]
   selectedList:string = this.lists[0]
-  displayList: any
+  displayList: MovieI[] = [];
+  search: string = "";
+
   constructor(private visualizeService: VisualizeService) { }
 
   ngOnInit(): void {
     this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
       this.displayList = moviesSeen
-      console.log(moviesSeen)
     });
     this.visualizeService.getRandMovies().subscribe(movies => {
       this.movies = movies;
@@ -27,27 +29,34 @@ export class MovieListComponent implements OnInit {
   }
 
   filterMovies(): void {
-    this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
-      this.filteredMovies = this.movies.filter(movie => !moviesSeen.includes(movie.uid));
+    this.visualizeService.getMoviesSeenByUser().subscribe((moviesSeen:MovieI[]) => {
+      this.filteredMovies = this.movies.filter(movie => !(moviesSeen.map(sMovie => sMovie.uid == movie.uid).reduce((prev, current) => prev || current, false)));
     });
   }
 
   markAsSeen(movieUid: number): void {
     this.visualizeService.createVisualizeRelationships(movieUid).subscribe(response => {
       this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
-        console.log(moviesSeen)
         this.filteredMovies = this.movies.filter(movie => !moviesSeen.includes(movie.uid));
       });
     });
   }
+
   onListChange(){
     if (this.selectedList == this.lists[0]) {
       this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
           this.displayList = moviesSeen
-          console.log(moviesSeen)
         });
     } else {
       this.displayList = this.filteredMovies
+    }
+  }
+
+  onClickSearch() {
+    if (this.search != "") {
+      this.visualizeService.getMovieByTitle(this.search).subscribe(movie =>
+        this.displayList = [movie]
+      );
     }
   }
 }

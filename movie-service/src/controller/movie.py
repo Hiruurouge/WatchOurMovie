@@ -1,5 +1,5 @@
 import model
-from schema import MovieId, Movie
+from schema import MovieId, Movie, MovieBase
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
@@ -27,6 +27,10 @@ def get_random_movies(db: Session):
 
 def get_movie(movie: MovieId, db:Session):
     result = db.query(model.Movie).filter(model.Movie.uid==movie.uid).first()
+    return result
+
+def get_movie_by_title(movie: MovieBase, db:Session):
+    result = db.query(model.Movie).filter(model.Movie.title==movie.title).first()
     return result
 
 def delete_movie(movie: MovieId, db:Session):

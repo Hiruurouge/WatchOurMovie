@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {MovieI} from "../interface/wom";
 import {AuthService} from "./auth.service";
@@ -27,9 +27,15 @@ export class VisualizeService {
   getAllMovies():Observable<any>{
     return this.http.get<any>(`${this.movieUrl}/all`, { headers: this.getHeaders() });
   }
+
+  getMovieByTitle(title:string):Observable<any>{
+    return this.http.get<any>(`${this.movieUrl}/title`, { headers: this.getHeaders(), params: {"title": title}});
+  }
+
   getRandMovies():Observable<any>{
     return this.http.get<any>(`${this.movieUrl}/random`, { headers: this.getHeaders() });
   }
+
   getMoviesSeenByUser(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/all`, { headers: this.getHeaders() });
   }
