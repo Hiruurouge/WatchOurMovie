@@ -218,6 +218,5 @@ def recommander_films(preferences, groupId=None, userId=None):
             if film['title'] == titre:
                 films_recommandes_objets.append(film)
                 break
-    print(films_recommandes_objets)
     return films_recommandes_objets
 
