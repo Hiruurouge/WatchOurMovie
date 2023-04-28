@@ -33,9 +33,7 @@ export class GenrePreferenceComponent implements OnInit {
     { uid: 10770, name: 'TV Movie' }
   ];
   staffList:any=[]
-  isMovieModalOpen:boolean=false
   prodlist: any = []
-  movies: any =[]
   genres: GenreI[]=Array(<GenreI>{})
   staffs: StaffI[]=Array(<StaffI>{})
   prods:ProdI[]=Array(<ProdI>{})
@@ -157,51 +155,6 @@ onGenreSelect(event:any){
     this.newProd = this.selectedProd
     console.log(this.newProd)
   }
-  async reco(){
-    this.movies = []
-    const obj:MovieDataI = {
-      genres: [],
-      staffs: [],
-      productions: []
-    };
-    // Ajouter les genres
-    for (const genre of this.genres) {
-      obj.genres.push({
-        uid: obj.genres.length,
-        name: genre.name
-      });
-    }
 
-// Ajouter les staffs
-    for (const staff of this.staffs) {
-      obj.staffs.push({
-        uid: obj.staffs.length,
-        name: staff.name,
-        job: staff.job
-      });
-    }
-
-// Ajouter les productions
-    for (const prod of this.prods) {
-      obj.productions.push({
-        uid: obj.productions.length,
-        name: prod.name
-      });
-    }
-
-    await this.recService.getRecommendation(obj).toPromise().then((res)=> {
-      this.movies = res
-    })
-  }
-  async openMovieModal()
-  {
-    await this.reco()
-    console.log(this.movies)
-    this.isMovieModalOpen = true;
-  }
-  closeMovieModal()
-  {
-    this.isMovieModalOpen = false
-  }
 
 }
