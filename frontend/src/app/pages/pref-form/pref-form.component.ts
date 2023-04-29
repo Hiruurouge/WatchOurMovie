@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
-import { AuthService } from '../services/auth.service';
-import {GenrePreferenceService} from "../services/genre-preference.service";
-import {GenreI} from "../interface/wom";
-import {GroupService} from "../services/group.service";
-import {PredictionService} from "../services/prediction.service";
+import { AuthService } from '../../services/auth.service';
+import {GenrePreferenceService} from "../../services/genre-preference.service";
+import {GenreI} from "../../interface/wom";
+import {GroupService} from "../../services/group.service";
+import {PredictionService} from "../../services/prediction.service";
 
 @Component({
   selector: 'app-pref-form',
@@ -16,6 +16,7 @@ export class PrefFormComponent {
   recommendedMovies: any[] = []; // variable pour stocker les films recommandés
   selectedGroup: any
   groups: any[] = []
+  isMe:boolean=false;
   constructor(private preferencesService: GenrePreferenceService,
               private groupService: GroupService,
               private predictionService: PredictionService) { }
@@ -33,6 +34,8 @@ export class PrefFormComponent {
     await this.preferencesService.getUserPreferences().toPromise().then(userPreferences => {
       this.predictionService.getRecommendation(userPreferences).toPromise().then(recommendedMovies => {
         this.recommendedMovies = recommendedMovies;
+        this.toggle();
+        this.selectedGroup="";
         console.log(this.recommendedMovies)
       });
     });
@@ -48,6 +51,9 @@ export class PrefFormComponent {
   onGroupChange(){
     console.log(this.selectedGroup)
     this.getGroupRecommendations(this.selectedGroup)
+  }
+  toggle(){
+    this.isMe=!this.isMe
   }
 
 

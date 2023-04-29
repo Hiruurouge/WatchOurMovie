@@ -13,16 +13,12 @@ import {Router} from "@angular/router";
 })
 
 
-export class NavbarComponent implements  OnChanges{
-  @Input() isConnected: boolean = false;
+export class NavbarComponent{
   currentDate = Date.now();
 
-  constructor(private authService: AuthService, private router:Router, private userService:UserService) {
+  constructor(public authService: AuthService, private router:Router, private userService:UserService) {
   }
-  ngOnChanges() {
-    this.isConnected = this.authService.getAccessToken() !== null;
 
-  }
   async logout() {
     // Supprimez toutes les données sensibles
     this.authService.clearToken();
@@ -30,8 +26,8 @@ export class NavbarComponent implements  OnChanges{
     window.localStorage.clear();
     window.sessionStorage.clear();
     // Redirigez vers la page de connexion
-    this.isConnected = false;
-    window.location.assign('/login');
+
+    window.location.assign('/');
 
   }
 

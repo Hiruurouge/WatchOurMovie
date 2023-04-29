@@ -18,6 +18,11 @@
 --
 -- Table structure for table `auth`
 --
+GRANT ALL PRIVILEGES ON * . * TO app;
+
+CREATE DATABASE IF NOT EXISTS wow;
+
+USE wow;
 
 DROP TABLE IF EXISTS `auth`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -28,7 +33,7 @@ CREATE TABLE `auth` (
   `password` text NOT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,3 +374,20 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-04-25  3:48:51
+CREATE TABLE IF NOT EXISTS like_production(
+    id_production INT NOT NULL,
+    id_user INT NOT NULL, 
+    FOREIGN KEY (id_user) REFERENCES wow_user(uid) ON DELETE CASCADE,
+    FOREIGN KEY (id_production) REFERENCES production(uid) ON DELETE CASCADE,
+    CONSTRAINT uid PRIMARY KEY (id_user,id_production)
+);
+
+CREATE TABLE IF NOT EXISTS like_staff(
+    id_staff INT NOT NULL,
+    id_user INT NOT NULL, 
+    FOREIGN KEY (id_user) REFERENCES wow_user(uid) ON DELETE CASCADE,
+    FOREIGN KEY (id_staff) REFERENCES staff(uid) ON DELETE CASCADE,
+    CONSTRAINT uid PRIMARY KEY (id_user,id_staff)
+);
+
+

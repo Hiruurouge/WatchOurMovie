@@ -1,55 +1,115 @@
-<section style="background-color: #eee;">
-  <div class="container py-5">
-    <div class="row">
-      <div class="col">
+<section>
+  <article class="greeting-profil">
+    <h1>Hello {{user.first_name}}!</h1>
+    <p> This is your profil page. You can see your preferences and edit your profil.</p>
+  </article>
+  <article class="profil">
+    <div class="profil-info">
+      <div class="profil-brand">
+        <h1>My account</h1>
+        <button class="standard-button" (click)="deleteUser()">Delete</button>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <img src='{{url}}' alt="avatar"
-            class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">{{user.last_name}} {{ user.first_name }}</h5>
+      <span><h2>User information</h2></span>
+      <form class="profil-form" ngForm="#updateForm" (submit)="updateUser()">
+        <div class="input-group">
+          <label>Last Name:</label>
+          <input name="last_name"[(ngModel)]="user.last_name">
+        </div>
+        <div class="input-group">
+          <label>First Name:</label>
+          <input name="first_name" [(ngModel)]="user.first_name">
+        </div>
+        <div class="input-group">
+          <div>Gender:</div>
+          <div class="radio-group">
+            <div>
+              <label for="man" >Man</label>
+              <input [(ngModel)]="user.genre" id="man" name="gender" value="H" type="radio">
+            </div>
+            <div>
+              <label for="woman" >Woman</label>
+              <input [(ngModel)]="user.genre"  id="woman" name="gender" value="F" type="radio">
+            </div>
+            <div>
+              <label for="other" >Other</label>
+              <input [(ngModel)]="user.genre"  id="other" name="gender" value="O" type="radio">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Full Name</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.last_name}} {{ user.first_name }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Age</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.age}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Gender</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"> {{user.genre}}</p>
-              </div>
-            </div>
-            <hr>
-          </div>
-        </div>
-        <button routerLink="/updateUser" class="btn btn-warning">Update</button>
+        <button type="submit" class="standard-button">Save</button>
+      </form>
+    </div>
+    <div class="profil-summary">
+      <img class="img" src="{{url}}">
+      <span>{{user.first_name}},{{ user.last_name }}</span>
+      <span>{{user.genre}}, {{user.age}}</span>
+    </div>
+  </article>
+  <article class="preferences">
+    <span><h1>Preferences</h1></span>
+    <div class="preferences-brand">
+      <h1>Genre Preferences</h1>
+      <div class="preferences-research">
+        <form (submit)="addGenrePreference()">
+          <select name="genre" [(ngModel)]="newGenre">
+            <option *ngFor="let genre of genresList" [ngValue]="genre">{{genre.name}}</option>
+          </select>
+          <button class="standard-button" type="submit">Add</button>
+        </form>
       </div>
     </div>
-  </div>
+    <div class="preference-tags">
+      <div class="pills" *ngFor="let genre of genres">
+        <span>{{genre.name}}</span>
+        <button class="pills-button" (click)="deleteGenrePreference(genre)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="preferences-brand">
+      <h1>Production Preferences</h1>
+      <div class="preferences-research">
+        <form (submit)="addProductionPreference()">
+          <select ngForm="#prod" name="prod" [(ngModel)]="newProd">
+            <option  *ngFor="let prod of prodlist" [ngValue]="prod">{{prod.name}}</option>
+          </select>
+          <button class="standard-button" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+    <div class="preference-tags">
+      <div class="pills" *ngFor="let prod of prods">
+        <span>{{prod.name}}</span>
+        <button class="pills-button" (click)="deleteProductionPreference(prod)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="preferences-brand">
+      <h1>Director Preferences</h1>
+      <div class="preferences-research">
+        <form ngForm="#staff" (submit)="addStaffPreference()">
+          <select name="staff" [(ngModel)]="newStaff">
+            <option *ngFor="let staff of staffList" [ngValue]="staff">{{staff.name}}</option>
+          </select>
+          <button class="standard-button" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+    <div class="preference-tags">
+      <div class="pills" *ngFor="let staff of staffs">
+        <span>{{staff.name}}</span>
+        <button class="pills-button" (click)="deleteStaffPreference(staff)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </article>
 </section>
 

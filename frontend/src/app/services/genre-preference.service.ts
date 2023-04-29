@@ -42,11 +42,11 @@ export class GenrePreferenceService {
   }
 
 
-  addGenrePreference(genres: GenreI): Observable<any> {
+  addGenrePreference(genres: GenreI[]): Observable<any> {
     const requestOptions = {
       headers: this.getHeaders(),
     };
-    return this.http.post<any>(`${this.baseUrl}`, [{"uid":genres.uid}], requestOptions);
+    return this.http.post<any>(`${this.baseUrl}`, genres, requestOptions);
   }
 
   deleteGenrePreference(genre: GenreI): Observable<any> {

@@ -1,0 +1,32 @@
+
+<section class="recommendation-container">
+  <div class="recommendation-header">
+    <div>
+      <h2>Recommendation</h2>
+    </div>
+
+    <div class="sub-header">
+      <div class="pimp-button">  
+        <button (click)="getUserRec()" class="me">Me</button>
+        <button  (click)="toggle()" class="group">Group</button>
+      </div>
+      <div *ngIf="!isMe" class="select-group-form">
+        <label>Name:</label>
+        <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
+       <option *ngFor="let group of groups" [value]="group.uid">{{ group.group_name }}</option>
+      </select>
+    </div>
+    </div>
+  </div>
+
+  <div class="movie-cards">
+    <div class="movie-card" *ngFor="let movie of recommendedMovies">
+      <img [src]="movie.poster" alt="Affiche du film {{ movie.title }}">
+      <div class="movie-details">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genres.join(', ') }}</p>
+        <p>{{ movie.overview }}</p>
+      </div>
+    </div>
+  </div>
+</section>

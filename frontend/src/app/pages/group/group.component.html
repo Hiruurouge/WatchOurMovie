@@ -1,63 +1,71 @@
 <div class="container">
-  <br>
-  <button  class="btn btn-success rounded" (click)="openModal()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-    </svg>
-  </button>
-  <div class="modal-background" [hidden]="!isModalOpen" (click)="closeModal()">
+  <div class="modal-background" *ngIf="isModalOpen" (click)="closeModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
-      <h2>Créer un nouveau groupe</h2>
-      <form (submit)="createGroup()">
-        <div>
-          <label>Nom du groupe:</label>
+      <div>
+        <h2>Créer un nouveau groupe</h2>
+      </div>
+      <form (submit)="createGroup()" ngForm="#create">
+        <div class="form-group">
+          <label>Group name:</label>
           <input type="text" [(ngModel)]="newGroupName" name="groupName">
         </div>
-        <button  type="submit">Create Group</button>
+        <button class="standard-button" type="submit">Create Group</button>
       </form>
     </div>
   </div>
-  <div class="modal-background" [hidden]="!isEditModalOpen" (click)="closeEditModal()">
+  <div class="modal-background" *ngIf="isEditModalOpen" (click)="closeEditModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
-      <h2>Update Group</h2>
-      <form (submit)="updateGroup()">
-        <div>
-          <label>New Name</label>
+      <div>
+        <h2>Update Group</h2>
+      </div>
+      <form (submit)="updateGroup()" ngForm="#update">
+        <div class="form-group">
+          <label>New Name:</label>
           <input type="text" [(ngModel)]="newGroupName" name="groupName">
         </div>
-        <button  type="submit">Update Group</button>
+        <button  class="standard-button"  type="submit">Update Group</button>
       </form>
     </div>
   </div>
-  <div class="modal-background" [hidden]="!isMembersModalOpen"  (click)="closeMembersModal()">
+  <div class="modal-background" *ngIf="isMembersModalOpen"  (click)="closeMembersModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
-      <h2>Membres du groupe "{{selectedGroup.group_name}}"</h2>
+      <div>
+        <h2>Membres du groupe "{{selectedGroup.group_name}}"</h2>
+      </div>
       <ul>
         <li *ngFor="let member of members">{{member.first_name}} {{member.last_name}}</li>
       </ul>
+      <div class="form-member" *ngIf="selectedGroup.owner === currentUser.uid">
+        <input type="email" placeholder="Ajouter un utilisateur" [(ngModel)]="newUserMail[selectedGroup.group_name]">
+        <button  class="standard-button" (click)="addGroupMember(selectedGroup, newUserMail[selectedGroup.group_name])">Ajouter</button>
+      </div>
     </div>
   </div>
 
-  <h1>My group</h1>
-  <div class="card-container">
-    <div class="card" *ngFor="let group of userGroups">
-      <div class="card-image">
-        <img src="https://robohash.org/{{group.group_name}}" alt="{{group.group_name}} Image">
+  <section>
+    <div class="greeting">
+      <div>
+        <h1>My group</h1>
+        <button (click)="openModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+          </svg>
+        </button>
       </div>
-      <div class="card-content">
-        <h2 class="card-title">{{ group.group_name }}</h2>
-        <div *ngIf="group.owner === currentUser.uid">
-          <input type="email" placeholder="Ajouter un utilisateur" [(ngModel)]="newUserMail[group.group_name]">
-          <button  (click)="addGroupMember(group, newUserMail[group.group_name])">Ajouter</button>
+    </div>
+    <div class="group-list">
+      <div class="group-card" *ngFor="let group of userGroups">
+        <img class="group-card-img" src="https://robohash.org/{{group.group_name}}" alt="{{group.group_name}} Image">
+        <div class="group-card-body">
+          <h2 class="group-card-title">{{group.group_name}}</h2>
         </div>
-        <div class="card-actions">
-          <button *ngIf="group.owner === currentUser.uid" (click)="openEditModal(group)">Modifier</button>
+        <div class="group-card-footer" >
+          <button (click)="openEditModal(group)" *ngIf="group.owner === currentUser.uid" >Edit</button>
           <button (click)="getGroupMembers(group)" >Members</button>
-          <button *ngIf="group.owner === currentUser.uid" (click)="deleteGroup(group)">Supprimer</button>
+          <button (click)="deleteGroup(group)" *ngIf="group.owner === currentUser.uid" >Quit</button>
         </div>
       </div>
     </div>
+  </section>
 
-  </div>
-  <br>
 </div>
