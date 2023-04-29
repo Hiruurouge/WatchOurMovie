@@ -3,10 +3,15 @@ import numpy as np
 import pymysql
 import os
 from dotenv import load_dotenv
+import requests
+
+from schema.user import UserBase
 
 load_dotenv()
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
 MYSQL_USER = os.getenv('MYSQL_USER')
+MOVIE_URL=os.getenv('MOVIE_URL')
+GROUP_URL = os.getenv('GROUP_URL')
 # Définir les films
 connection = pymysql.connect(
     host='10.5.0.2',
@@ -134,12 +139,16 @@ def cosine_similarity(a, b):
     norm_b = np.linalg.norm(b)
     return dot_product / (norm_a * norm_b)
 
-def recommander_films(preferences):
-    #preferences = json.loads(preferences)
+
+def recommander_films(preferences, groupId=None, userId=None):
+    # Load preferences from JSON string
     data = json.loads(preferences)
     preferences = transform_object(data)
+    
+    # Initialize list of recommended films
     films_recommandes = []
-    # Collecter tous les films avec les de l'utilisateur
+    
+    # Collect all films from the user's preferred genres, directors, and production companies
     for genre in preferences['genres']:
         if genre not in genres_dict:
             genres_dict.setdefault(genre, [])
@@ -153,11 +162,26 @@ def recommander_films(preferences):
             maisons_de_production_dict.setdefault(maison_de_production,[])
         films_recommandes.extend(maisons_de_production_dict[maison_de_production])
 
-    # Enlever les doublons
+    # Remove duplicate films
     films_recommandes = list(set(films_recommandes))
-    similarites_cosinus = {}
+    # If a groupId is provided, remove films that have been watched by the group
+    if groupId is not None:
+        response = requests.get(f"{GROUP_URL}/users",params={"uid":groupId})
+        response.raise_for_status()
+        users = response.json()
+        users_id= [x['uid'] for x in users]
+        group_watchlist = requests.post(f"{MOVIE_URL}/watch/group",data=json.dumps([UserBase(uid=id).dict() for id in users_id])).json()
+        watched_films = [film['title'] for film in group_watchlist]
+        films_recommandes = [film for film in films_recommandes if film not in watched_films]
+    
+    # If a userId is provided, remove films that have been watched by the user
+    if userId is not None:
+        user_watchlist = requests.get('http://10.5.0.9:3219/watch/all?uid='+userId).json()
+        watched_films = [film['title'] for film in user_watchlist]
+        films_recommandes = [film for film in films_recommandes if film not in watched_films]
 
-    # Calculer la similarité cosinus entre chaque film et les préférences de l'utilisateur
+    # Calculate cosine similarity between each film and the user's preferences
+    similarites_cosinus = {}
     for film in films_recommandes:
         film_preferences = np.zeros((3,))
         user_preferences = np.zeros((3,))
@@ -165,7 +189,7 @@ def recommander_films(preferences):
         film_realisateurs = films[0]['realisateurs']
         film_maisons_de_production = films[0]['maisons_de_production']
 
-        # Créer un vecteur pour les films
+        # Create a vector for the film
         for genre in film_genres:
             if genre in preferences['genres']:
                 film_preferences[0] = 1
@@ -176,19 +200,17 @@ def recommander_films(preferences):
             if maison_de_production in preferences['maisons_de_production']:
                 film_preferences[2] = 1
         
-        # Créer un vecteur pour les préférences de l'utilisateur
+        # Create a vector for the user's preferences
         user_preferences[0] = len(preferences['genres'])
         user_preferences[1] = len(preferences['realisateurs'])
         user_preferences[2] = len(preferences['maisons_de_production'])
         
-        # Calculer la similarité cosinus entre le film et les préférences de l'utilisateur
+        # Calculate cosine similarity between the film and the user's preferences
         similarite = cosine_similarity(film_preferences, user_preferences)
         similarites_cosinus[film] = similarite
 
-    # Trier les films par ordre de similarité cosinus décroissante et retourner les meilleurs films recommandés
-    films_recommandes = sorted(similarites_cosinus.keys(), key=lambda x: similarites_cosinus[x], reverse=True)
-    print(films_recommandes)
-    
+    # Sort films by descending cosine similarity and return the top 10 recommended films
+    films_recommandes = sorted(similarites_cosinus.keys(), key=lambda x: similarites_cosinus[x], reverse=True)[:10]
     films_recommandes_objets = []
 
     for titre in films_recommandes[:10]:
@@ -197,3 +219,4 @@ def recommander_films(preferences):
                 films_recommandes_objets.append(film)
                 break
     return films_recommandes_objets
+

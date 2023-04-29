@@ -40,7 +40,7 @@ export class PrefFormComponent {
   // fonction pour récupérer les films recommandés pour un groupe d'utilisateurs en fonction de ses préférences
   getGroupRecommendations(uid: any): void {
     this.preferencesService.getGroupPreferences(uid).subscribe(groupPreferences => {
-      this.predictionService.getRecommendation(groupPreferences).subscribe(recommendedMovies => {
+      this.predictionService.getRecommendation(groupPreferences,uid).subscribe(recommendedMovies => {
         this.recommendedMovies = recommendedMovies;
       });
     });

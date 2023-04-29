@@ -35,6 +35,7 @@ export interface MovieDataI {
 }
 export interface MovieI{
   uid: number
+  title?:string
   release_date?:string
   overview? : string
   poster?: string
