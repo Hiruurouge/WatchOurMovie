@@ -9,6 +9,7 @@ services:
       - ./db/.env
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./.env:/code/.env
     networks:
       backend: 
         ipv4_address: "10.5.0.2"
@@ -24,6 +25,7 @@ services:
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend: 
         ipv4_address: "10.5.0.3"
@@ -35,6 +37,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.4"
@@ -46,6 +49,7 @@ services:
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.5"
@@ -57,6 +61,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.6"
@@ -68,6 +73,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.7"
@@ -79,6 +85,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.9"
@@ -90,6 +97,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.10"
@@ -106,6 +114,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/.env
     networks:
       backend:
         ipv4_address: "10.5.0.11"
