@@ -11,8 +11,7 @@ export class MovieListComponent implements OnInit {
 
   movies: MovieI[] = [];
   filteredMovies: MovieI[] = [];
-  lists: string[] = ["What you watched","Tell us what you watched"]
-  selectedList:string = this.lists[0]
+  watched:boolean=false;
   displayList: MovieI[] = [];
   search: string = "";
 
@@ -31,24 +30,25 @@ export class MovieListComponent implements OnInit {
   filterMovies(): void {
     this.visualizeService.getMoviesSeenByUser().subscribe((moviesSeen:MovieI[]) => {
       this.filteredMovies = this.movies.filter(movie => !(moviesSeen.map(sMovie => sMovie.uid == movie.uid).reduce((prev, current) => prev || current, false)));
+      this.displayList= this.filteredMovies
     });
   }
 
   markAsSeen(movieUid: number): void {
     this.visualizeService.createVisualizeRelationships(movieUid).subscribe(response => {
-      this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
-        this.filteredMovies = this.movies.filter(movie => !moviesSeen.includes(movie.uid));
-      });
+      this.filterMovies();
     });
   }
 
   onListChange(){
-    if (this.selectedList == this.lists[0]) {
+    if (this.watched) {
       this.visualizeService.getMoviesSeenByUser().subscribe(moviesSeen => {
           this.displayList = moviesSeen
+          this.watched=!this.watched
         });
     } else {
       this.displayList = this.filteredMovies
+      this.watched=!this.watched
     }
   }
 

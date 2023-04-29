@@ -1,11 +1,22 @@
-<div class="recommendation-container">
+
+<section class="recommendation-container">
   <div class="recommendation-header">
-    <h2>Recommendation</h2>
-    <div>By group:  <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
-     <option *ngFor="let group of groups" [value]="group.uid">{{ group.group_name }}</option>
-    </select>
+    <div>
+      <h2>Recommendation</h2>
     </div>
-    <button class="btn btn-success" (click)="getUserRec()">Me</button>
+
+    <div class="sub-header">
+      <div class="pimp-button">  
+        <button (click)="getUserRec()" class="me">Me</button>
+        <button  (click)="toggle()" class="group">Group</button>
+      </div>
+      <div *ngIf="!isMe" class="select-group-form">
+        <label>Name:</label>
+        <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
+       <option *ngFor="let group of groups" [value]="group.uid">{{ group.group_name }}</option>
+      </select>
+    </div>
+    </div>
   </div>
 
   <div class="movie-cards">
@@ -18,4 +29,4 @@
       </div>
     </div>
   </div>
-</div>
+</section>

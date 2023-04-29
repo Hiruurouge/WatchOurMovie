@@ -11,7 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { GroupComponent } from './pages/group/group.component';
 import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 import { NavbarComponent } from './pages/navbar/navbar.component';
-import { ModalComponent } from './pages/modal/modal.component';
 import {RouterModule, Routes} from "@angular/router";
 import { MovieListComponent } from './pages/movielist/movielist.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +26,6 @@ let routes: Routes;
     GroupComponent,
     UserProfileComponent,
     NavbarComponent,
-    ModalComponent,
     MovieListComponent
   ],
   imports: [

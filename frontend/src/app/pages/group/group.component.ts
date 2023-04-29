@@ -148,6 +148,8 @@ getGroupMembers(group: any)
       await this.userService.getUserByMail(mail).toPromise().then((res)=>{
         userId=res
         this.groupService.addUser(group,userId).toPromise().then(()=> console.log("done"))
+        this.getGroupMembers(group)
       })
+
   }
 }

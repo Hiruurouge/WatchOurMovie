@@ -16,6 +16,7 @@ export class PrefFormComponent {
   recommendedMovies: any[] = []; // variable pour stocker les films recommandés
   selectedGroup: any
   groups: any[] = []
+  isMe:boolean=false;
   constructor(private preferencesService: GenrePreferenceService,
               private groupService: GroupService,
               private predictionService: PredictionService) { }
@@ -33,6 +34,7 @@ export class PrefFormComponent {
     await this.preferencesService.getUserPreferences().toPromise().then(userPreferences => {
       this.predictionService.getRecommendation(userPreferences).toPromise().then(recommendedMovies => {
         this.recommendedMovies = recommendedMovies;
+        this.toggle()
         console.log(this.recommendedMovies)
       });
     });
@@ -48,6 +50,9 @@ export class PrefFormComponent {
   onGroupChange(){
     console.log(this.selectedGroup)
     this.getGroupRecommendations(this.selectedGroup)
+  }
+  toggle(){
+    this.isMe=!this.isMe
   }
 
 

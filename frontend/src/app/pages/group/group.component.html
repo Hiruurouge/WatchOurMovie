@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="modal-background" *ngIf="!isModalOpen" (click)="closeModal()">
+  <div class="modal-background" *ngIf="isModalOpen" (click)="closeModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
       <div>
         <h2>Créer un nouveau groupe</h2>
@@ -13,7 +13,7 @@
       </form>
     </div>
   </div>
-  <div class="modal-background" *ngIf="!isEditModalOpen" (click)="closeEditModal()">
+  <div class="modal-background" *ngIf="isEditModalOpen" (click)="closeEditModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
       <div>
         <h2>Update Group</h2>
@@ -27,7 +27,7 @@
       </form>
     </div>
   </div>
-  <div class="modal-background" *ngIf="!isMembersModalOpen"  (click)="closeMembersModal()">
+  <div class="modal-background" *ngIf="isMembersModalOpen"  (click)="closeMembersModal()">
     <div class="modal-container" (click)="stopPropagation($event)">
       <div>
         <h2>Membres du groupe "{{selectedGroup.group_name}}"</h2>
@@ -39,7 +39,6 @@
         <input type="email" placeholder="Ajouter un utilisateur" [(ngModel)]="newUserMail[selectedGroup.group_name]">
         <button  class="standard-button" (click)="addGroupMember(selectedGroup, newUserMail[selectedGroup.group_name])">Ajouter</button>
       </div>
-
     </div>
   </div>
 
