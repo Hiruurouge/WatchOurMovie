@@ -1,7 +1,7 @@
 <section class="multiple-form">
   <div class="signup-form">
     <h1>Sign Up</h1>
-    <form (ngSubmit)="onRegister()">
+    <form (ngSubmit)="onRegister()" ngForm="#signup">
       <label>First Name:</label>
       <input [ngModel]="firstName">
       <label>Last Name:</label>
@@ -32,7 +32,7 @@
   </div>
   <div class="login-form">
     <h1>Login</h1>
-    <form (ngSubmit)="onLogin()">
+    <form (ngSubmit)="onLogin()" ngForm="#login">
       <label>Email</label>
       <input [(ngModel)]="username" name="username">
       <label>Password</label>

@@ -3,16 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PrefFormComponent } from './pref-form/pref-form.component';
-import { MenuComponent } from './menu/menu.component';
-import { FooterComponent } from './footer/footer.component';
+import { PrefFormComponent } from './pages/pref-form/pref-form.component';
+import { FooterComponent } from './pages/footer/footer.component';
 import { LoginComponent } from './pages/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { GroupComponent } from './pages/group/group.component';
 import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 import { NavbarComponent } from './pages/navbar/navbar.component';
-import { GenrePreferenceComponent } from './pages/genre-preference/genre-preference.component';
 import { ModalComponent } from './pages/modal/modal.component';
 import {RouterModule, Routes} from "@angular/router";
 import { MovieListComponent } from './pages/movielist/movielist.component';
@@ -24,13 +22,11 @@ let routes: Routes;
   declarations: [
     AppComponent,
     PrefFormComponent,
-    MenuComponent,
     FooterComponent,
     LoginComponent,
     GroupComponent,
     UserProfileComponent,
     NavbarComponent,
-    GenrePreferenceComponent,
     ModalComponent,
     MovieListComponent
   ],

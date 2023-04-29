@@ -10,7 +10,7 @@ ENV MYSQL_USER=${MYSQL_USER}
 ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
 #Add volume for database backup
-COPY ./src/wow-db.sql  /docker-entrypoint-initdb.d/
+COPY ./src/wow.sql  /docker-entrypoint-initdb.d/
 
 CMD ["mysqld"]
 

@@ -7,6 +7,7 @@ import {GenrePreferenceService} from "../../services/genre-preference.service";
 import {StaffService} from "../../services/staff.service";
 import {ProductionService} from "../../services/production.service";
 import {PredictionService} from "../../services/prediction.service";
+import { GenreService } from 'src/app/services/genre.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,32 +25,12 @@ export class UserProfileComponent implements  OnInit{
   newProd: ProdI=<ProdI>{};
   staffList:any=[];
   prodlist: any = []
-  genresList = [
-    { uid: 12, name: 'Adventure' },
-    { uid: 14, name: 'Fantasy' },
-    { uid: 16, name: 'Animation' },
-    { uid: 18, name: 'Drama' },
-    { uid: 27, name: 'Horror' },
-    { uid: 28, name: 'Action' },
-    { uid: 35, name: 'Comedy' },
-    { uid: 36, name: 'History' },
-    { uid: 37, name: 'Western' },
-    { uid: 53, name: 'Thriller' },
-    { uid: 80, name: 'Crime' },
-    { uid: 99, name: 'Documentary' },
-    { uid: 878, name: 'Science Fiction' },
-    { uid: 9648, name: 'Mystery' },
-    { uid: 10402, name: 'Music' },
-    { uid: 10749, name: 'Romance' },
-    { uid: 10751, name: 'Family' },
-    { uid: 10752, name: 'War' },
-    { uid: 10770, name: 'TV Movie' }
-  ];
-  constructor(private userService: UserService,private router: Router,private genrePreferenceService: GenrePreferenceService, private staffService:StaffService,private prodService:ProductionService, private recService:PredictionService) { }
+  genresList:any = [];
+  constructor(private userService: UserService,private router: Router,private genrePreferenceService: GenrePreferenceService, private staffService:StaffService,private prodService:ProductionService, private genreService:  GenreService) { }
 
   addGenrePreference() {
     console.log(this.newGenre)
-    this.genrePreferenceService.addGenrePreference(this.newGenre).subscribe((res: any) => {
+    this.genrePreferenceService.addGenrePreference([this.newGenre]).subscribe((res: any) => {
       this.genrePreferenceService.getGenrePreferences().subscribe((res: any) => {
         this.genres = res;
       });
@@ -109,6 +90,7 @@ export class UserProfileComponent implements  OnInit{
     })
     await this.staffService.getAllStaff().toPromise().then((res)=> this.staffList=res)
     await this.prodService.getAllProd().toPromise().then((res)=>this.prodlist=res)
+    await this.genreService.getAllProd().toPromise().then((res)=>this.genresList=res)
     console.log(this.genres,this.staffs,this.prods)
   }
   updateUser() {

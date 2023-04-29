@@ -50,8 +50,8 @@
     <div class="preferences-brand">
       <h1>Genre Preferences</h1>
       <div class="preferences-research">
-        <form>
-          <select name="staff" [(ngModel)]="newStaff">
+        <form (submit)="addGenrePreference()">
+          <select name="genre" [(ngModel)]="newGenre">
             <option *ngFor="let genre of genresList" [ngValue]="genre">{{genre.name}}</option>
           </select>
           <button class="standard-button" type="submit">Add</button>

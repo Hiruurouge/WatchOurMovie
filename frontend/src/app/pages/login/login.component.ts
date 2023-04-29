@@ -41,6 +41,7 @@ export class LoginComponent {
           const tokenType = response.token_type;
           this.userService.setToken({ accessToken, tokenType });
           this.router.navigate(['like'])
+          
         },
         error: (error) => {
           console.error(error);

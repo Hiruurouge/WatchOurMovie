@@ -27,6 +27,7 @@ export class GroupComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log(this.userGroups)
+
     await this.userService.getUser()
     this.currentUser = this.userService.user
     await this.groupService.getUserGroups().toPromise().then((groups)=>{
