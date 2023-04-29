@@ -1,6 +1,7 @@
 import model
 from schema import Preferences, UserBase, Genre
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
 from typing import List
 
@@ -10,8 +11,11 @@ def get_all_genres(db:Session):
 
 def create_genre_preference(preferences: List[Preferences], db: Session):
     db_preferences=[model.Preferences(id_user= preference.id_user, id_genre=preference.id_genre) for preference in preferences]
-    db.add_all(db_preferences)
-    db.commit()
+    try:
+        db.add_all(db_preferences)
+        db.commit()
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="One genre preference already exist at least.")
     return preferences
 
 def get_genre_preferences_by_user(uid:int, db:Session):

@@ -10,11 +10,11 @@ def create_group(group:Group, db:Session):
     try:
         db_group=model.Group(group_name=group.group_name, owner=group.owner)
         db.add(db_group)
+        db.commit()
     except IntegrityError: 
         db.rollback()
         raise HTTPException(status_code="Group already exists.")
     else:
-        db.commit()
         db.refresh(db_group)
         belong= Belong(id_group=db_group.uid, id_user=db_group.owner)
         add_to_group([belong],db)

@@ -9,19 +9,22 @@ def create_genre(genre:Genre, db:Session):
     db_genre= model.Genre(uid=genre.uid, name=genre.name)
     try: 
         db.add(db_genre)
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Genre already exists.")
     else: 
-        db.commit()
         db.refresh(db_genre)
         return db_genre.uid
 
 def create_genres(genres:List[Genre],db:Session):
     db_genres = [model.Genre(uid=genre.uid, name=genre.name) for genre in genres]
-    db.add_all(db_genres)
-    db.commit()
-
+    try:
+        db.add_all(db_genres)
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="At least one genre already exists.")
     
 def get_all_genres(db:Session):
     result = db.query(model.Genre).all()

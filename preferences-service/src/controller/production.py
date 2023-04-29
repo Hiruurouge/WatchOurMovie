@@ -9,11 +9,11 @@ def create_production_preference(preferences: List[LikeProduction], db: Session)
     db_preferences=[model.LikeProduction(id_user= preference.id_user, id_production=preference.id_production) for preference in preferences]
     try: 
         db.add_all(db_preferences)
+        db.commit()
     except IntegrityError: 
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Relationship already exists.")
     else:
-        db.commit()
         return preferences
 
 def get_production_preferences_by_user(uid:int, db:Session):

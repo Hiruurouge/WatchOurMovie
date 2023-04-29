@@ -8,14 +8,13 @@ def create_user(db:Session, user: User)->bool:
     db_user = model.User(uid = user.uid, first_name = user.first_name, last_name=user.last_name,age=user.age, genre=user.genre)
     try:   
         db.add(db_user)
+        db.commit()
     except IntegrityError: 
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already register")
     else: 
-        db.commit()
         db.refresh(db_user)
-
-
+        
 def delete_user(db:Session, user: UserBase):
     db.query(model.User).filter(model.User.uid==user.uid).delete()
     db.commit()
