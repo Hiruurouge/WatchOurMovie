@@ -41,6 +41,8 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.4"
+      frontend:
+        ipv4_address: "10.5.0.35"
 
   auth-service:
     build: ./auth-service
@@ -118,6 +120,14 @@ services:
     networks:
       backend:
         ipv4_address: "10.5.0.11"
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - 4200:4200
+    networks:
+      frontend:
+        ipv4_address: "10.5.0.34"
 
 
 networks:
@@ -127,6 +137,13 @@ networks:
       config:
         - subnet: "10.5.0.0/27"
           gateway: "10.5.0.1"
+  
+  frontend: 
+    driver: bridge
+    ipam: 
+      config:
+        - subnet: "10.5.0.32/29"
+          gateway: "10.5.0.33"
 
 volumes:
   mysql-data:
