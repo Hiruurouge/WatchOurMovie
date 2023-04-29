@@ -1,11 +1,11 @@
 <div class="recommendation-container">
   <div class="recommendation-header">
-    <h2>Films recommandés</h2>
-    <div>Par groupe:  <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
+    <h2>Recommendation</h2>
+    <div>By group:  <select [(ngModel)]="selectedGroup" (change)="onGroupChange()">
      <option *ngFor="let group of groups" [value]="group.uid">{{ group.group_name }}</option>
     </select>
     </div>
-    <button class="btn btn-success" (click)="getUserRec()">Pour moi</button>
+    <button class="btn btn-success" (click)="getUserRec()">Me</button>
   </div>
 
   <div class="movie-cards">
