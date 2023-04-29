@@ -34,7 +34,8 @@ export class PrefFormComponent {
     await this.preferencesService.getUserPreferences().toPromise().then(userPreferences => {
       this.predictionService.getRecommendation(userPreferences).toPromise().then(recommendedMovies => {
         this.recommendedMovies = recommendedMovies;
-        this.toggle()
+        this.toggle();
+        this.selectedGroup="";
         console.log(this.recommendedMovies)
       });
     });
