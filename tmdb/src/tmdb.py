@@ -9,9 +9,9 @@ from .use_db import create_one
 
 load_dotenv()
 
-TMDB_URL = os.getenv('TMDB_URL')
+TMDB_URL = os.getenv('TMDB_BASE_URL')
 API_KEY = os.getenv('API_KEY')
-TMDB_IMG_URL = os.getenv('TMDB_IMG_URL')
+TMDB_IMG_URL = os.getenv('TMDB_BASE_IMG_URL')
 
 def get_movie_id(title: str) -> str:
     url:str = f"{TMDB_URL}search/movie?api_key={API_KEY}&language=en-US&query={title}&page=1"
