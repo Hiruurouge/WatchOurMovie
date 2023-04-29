@@ -9,11 +9,11 @@ def create_staff_preference(preferences: List[LikeStaff], db: Session):
     db_preferences=[model.LikeStaff(id_user= preference.id_user, id_staff=preference.id_staff) for preference in preferences]
     try:     
         db.add_all(db_preferences)
+        db.commit()
     except IntegrityError: 
         db.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Relationship already exists.")
     else:
-        db.commit()
         return preferences
 
 def get_staff_preferences_by_user(uid:int, db:Session):

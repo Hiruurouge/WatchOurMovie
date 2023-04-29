@@ -6,17 +6,14 @@ from .user import user
 from .tmdb import tmdb
 from .recommendation import recommendation
 from .preference import preference
-
 from .visualize import visualize
-
 from .recommendation import recommendation
-
-from fastapi.middleware.cors import CORSMiddleware
-
 from .group import group
 from .production import production
 from .staff import staff
 from .movie import movie
+from .genre import genre
+
 app = FastAPI()
 subapi = FastAPI()
 
@@ -36,6 +33,7 @@ subapi.include_router(group.router)
 subapi.include_router(tmdb.router)
 subapi.include_router(visualize.router)
 subapi.include_router(production.router)
+subapi.include_router(genre.router)
 subapi.include_router(staff.router)
 subapi.include_router(movie.router)
 app.mount("/api", subapi)

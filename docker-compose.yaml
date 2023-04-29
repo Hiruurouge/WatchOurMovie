@@ -6,9 +6,10 @@ services:
     ports:
       - 3306:3306
     env_file:
-      - ./db/.env
+      - ./.env
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./.env:/code/src/.env
     networks:
       backend: 
         ipv4_address: "10.5.0.2"
@@ -24,6 +25,7 @@ services:
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend: 
         ipv4_address: "10.5.0.3"
@@ -35,9 +37,12 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.4"
+      frontend:
+        ipv4_address: "10.5.0.35"
 
   auth-service:
     build: ./auth-service
@@ -46,6 +51,7 @@ services:
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.5"
@@ -57,6 +63,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.6"
@@ -68,6 +75,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.7"
@@ -79,6 +87,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.9"
@@ -90,6 +99,7 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.10"
@@ -106,9 +116,18 @@ services:
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
+      - ./.env:/code/src/.env
     networks:
       backend:
         ipv4_address: "10.5.0.11"
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - 4200:4200
+    networks:
+      frontend:
+        ipv4_address: "10.5.0.34"
 
 
 networks:
@@ -118,6 +137,13 @@ networks:
       config:
         - subnet: "10.5.0.0/27"
           gateway: "10.5.0.1"
+  
+  frontend: 
+    driver: bridge
+    ipam: 
+      config:
+        - subnet: "10.5.0.32/29"
+          gateway: "10.5.0.33"
 
 volumes:
   mysql-data:
