@@ -75,6 +75,7 @@ export class GenrePreferenceComponent implements OnInit {
       });
     });
   }
+
 onGenreSelect(event:any){
   const selectedGenreName = event.target.value;
   const selectedGenre = this.genresList.find(genre => genre.name === selectedGenreName);

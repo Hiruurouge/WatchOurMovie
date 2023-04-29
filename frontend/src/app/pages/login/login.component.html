@@ -1,23 +1,54 @@
-<section>
-
-  <div class="wrapper fadeInDown">
-    <br>
-    <br>
-    <div id="formContent">
-      <div class="fadeIn first">
-        <img src="assets/movie-svgrepo-com.svg" id="icon" alt="User Icon" />
+<section class="multiple-form">
+  <div class="signup-form">
+    <h1>Sign Up</h1>
+    <form (ngSubmit)="onRegister()">
+      <label>First Name:</label>
+      <input [ngModel]="firstName">
+      <label>Last Name:</label>
+      <input [ngModel]="lastName">
+      <div>
+        <div>
+          <label for="man" >Man</label>
+          <input [ngModel]="genre" id="man" name="gender" value="H" type="radio">
+        </div>
+        <div>
+          <label for="woman" >Woman</label>
+          <input [ngModel]="genre" id="woman" name="gender" value="F" type="radio">
+        </div>
+        <div>
+          <label for="other" >Other</label>
+          <input [ngModel]="genre" id="other" name="gender" value="O" type="radio">
+        </div>
       </div>
-      <br>
-      <form  (ngSubmit)="onSubmit()">
-        <input type="text" id="login" class="fadeIn second"[(ngModel)]="username" name="login" placeholder="login" required>
-        <input type="password" id="password"[(ngModel)]="password" class="fadeIn third" name="login" placeholder="password" required>
-        <input type="submit" class="fadeIn fourth" value="Log In">
-      </form>
-
-      <div id="formFooter">
-        <a class="underlineHover" href="#">No account ? Register</a>
-      </div>
-
-    </div>
+      <label>Email:</label>
+      <input [ngModel]="email" type="email">
+      <label>Password:</label>
+      <input [ngModel]="password" type="password">
+      <label>Confirm password:</label>
+      <input type="password">
+      <button type="submit" class="standard-button">Sign Up</button>
+      <span>Already register?<a class="underline" (click)="toggle()">Login</a></span>
+    </form>
+  </div>
+  <div class="login-form">
+    <h1>Login</h1>
+    <form (ngSubmit)="onLogin()">
+      <label>Email</label>
+      <input [(ngModel)]="username" name="username">
+      <label>Password</label>
+      <input [(ngModel)]="password" type="password" name="password" >
+      <button class="standard-button" type="submit">Login</button>
+      <span>You don't have an account?<a class="underline" (click)="toggle()">Register</a></span>
+    </form>
+  </div>
+</section>
+<section class="square" [@slide]="isRegister? 'left' : 'right'">
+  <div class="login-pitch" *ngIf="isRegister===true">
+    <h1>Good to have you back!</h1>
+    <p>You didn't make a choice yet? Sign in to find the perfect match.</p>
+  </div>
+  <div class="signup-pitch" *ngIf="isRegister===false">
+    <h1>What is Watch our Movie?</h1>
+    <p>WOM app, get the best movie recommendation for you.</p>
   </div>
 </section>
