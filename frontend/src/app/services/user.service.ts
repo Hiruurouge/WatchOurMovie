@@ -36,7 +36,7 @@ export class UserService {
       headers: new HttpHeaders(headerDict),
     };
 
-     await this.http.get<any>("http://localhost:3212/api/user/", requestOptions).toPromise().then((rep)=>this.user=rep)
+     await this.http.get<any>("http://localhost:3212/api/user", requestOptions).toPromise().then((rep)=>this.user=rep)
     console.log(this.user)
   }
 
@@ -50,7 +50,7 @@ export class UserService {
 
   deleteUser(): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
+      'Authorization': `Bearer ${this.authService.getAccessToken()!}`,
       'Content-Type': 'application/json'
     });
     return this.http.delete(this.apiUrl,{headers})
