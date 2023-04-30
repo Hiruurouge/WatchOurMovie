@@ -4,7 +4,7 @@ services:
   db:
     build: ./db
     ports:
-      - 3306:3306
+      - ${MYSQL_PORT}:${MYSQL_PORT}
     env_file:
       - ./.env
     volumes:
@@ -12,7 +12,7 @@ services:
       - ./.env:/code/src/.env
     networks:
       backend: 
-        ipv4_address: "10.5.0.2"
+        ipv4_address: "${MYSQL_URL}"
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
@@ -21,88 +21,102 @@ services:
   user-service:
     build: ./user-service
     ports:
-      - 3213:3213
+      - ${USER_PORT}:${USER_PORT}
+    env_file:
+      - ./.env
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend: 
-        ipv4_address: "10.5.0.3"
+        ipv4_address: "${USER_IP}"
         
   gateway-service:
     build: ./gateway-service
     ports:
       - 3212:3212
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.4"
+        ipv4_address: "${GATEWAY_IP_B}"
       frontend:
-        ipv4_address: "10.5.0.35"
+        ipv4_address: "${GATEWAY_IP_F}"
 
   auth-service:
     build: ./auth-service
     ports:
-      - 3214:3214
+      - ${AUTH_PORT}:${AUTH_PORT}
+    env_file:
+      - ./.env
     volumes: 
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.5"
+        ipv4_address: "${AUTH_IP}"
         
   group-service:
     build: ./group-service
     ports:
-      - 3215:3215
+      - ${GROUP_PORT}:${GROUP_PORT}
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.6"
+        ipv4_address: "${GROUP_IP}"
         
   preference-service:
     build: ./preferences-service
     ports:
-      - 3216:3216
+      - ${PREFERENCE_PORT}:${PREFERENCE_PORT}
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.7"
+        ipv4_address: "${PREFERENCE_IP}"
 
   movie-service:
     build: ./movie-service
     ports:
-      - 3219:3219
+      - ${MOVIE_PORT}:${MOVIE_PORT}
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.9"
+        ipv4_address: "${MOVIE_IP}"
 
   tmdb-service:
     build: ./tmdb
     ports:
-      - 3310:3213
+      - ${TMDB_PORT}:${TMDB_PORT}
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.10"
+        ipv4_address: "${TMDB_IP}"
 
   reco-service:
     build: ./reco_service
@@ -112,22 +126,26 @@ services:
     links:
       - db
     ports:
-      - 3217:3220
+      - ${RECO_PORT}:${RECO_PORT}
+    env_file:
+      - ./.env
     volumes:
       - ./model:/code/model
       - ./schema:/code/schema
       - ./.env:/code/src/.env
     networks:
       backend:
-        ipv4_address: "10.5.0.11"
+        ipv4_address: "${RECO_IP}"
   
   frontend:
     build: ./frontend
     ports:
-      - 4200:4200
+      - ${FRONT_PORT}:${FRONT_PORT}
+    env_file:
+      - ./.env
     networks:
       frontend:
-        ipv4_address: "10.5.0.34"
+        ipv4_address: "${FRONT_IP}"
 
 
 networks:
@@ -135,15 +153,15 @@ networks:
     driver: bridge
     ipam: 
       config:
-        - subnet: "10.5.0.0/27"
-          gateway: "10.5.0.1"
+        - subnet: "${NETWORK_BACK}/27"
+          gateway: "${NETWORK_BACK_GATEWAY}"
   
   frontend: 
     driver: bridge
     ipam: 
       config:
-        - subnet: "10.5.0.32/29"
-          gateway: "10.5.0.33"
+        - subnet: "${NETWORK_FRONT}/29"
+          gateway: "${NETWORK_FRONT_GATEWAY}"
 
 volumes:
   mysql-data:

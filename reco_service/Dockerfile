@@ -11,6 +11,6 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY ./src /code/src
 
 # Launch Uvicorn Serveur
-CMD ["uvicorn", "src.main:app","--host","0.0.0.0", "--port", "3217"]
+CMD uvicorn src.main:app --host 0.0.0.0 --port ${RECO_PORT}
 
-EXPOSE 3217
+EXPOSE ${RECO_PORT}

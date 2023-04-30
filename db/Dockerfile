@@ -14,4 +14,4 @@ COPY ./src/wow.sql  /docker-entrypoint-initdb.d/
 
 CMD ["mysqld"]
 
-EXPOSE 3306
+EXPOSE ${MYSQL_PORT}

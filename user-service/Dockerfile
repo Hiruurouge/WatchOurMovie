@@ -12,6 +12,6 @@ COPY ./src /code/src
 
 
 # Launch Uvicorn Serveur
-CMD ["uvicorn", "src.main:app","--host","0.0.0.0", "--port", "3213"]
+CMD uvicorn src.main:app --host 0.0.0.0 --port ${USER_PORT}
 
-EXPOSE 3213
+EXPOSE ${USER_PORT}
