@@ -2,9 +2,9 @@
   <div class="recommendation-header">
     <h2>Your movies</h2>
     <div class="sub-header">
-      <div class="pimp-button">  
-        <button (click)="onListChange()" class="all">All</button>
-        <button (click)="onListChange()" class="watched">Watched</button>
+      <div class="pimp-button">
+        <button (click)="onListChange()" class="all">Watched</button>
+        <button (click)="onListChange()" class="watched">All</button>
       </div>
       <div *ngIf="watched" class="search-form">
         <input [(ngModel)]="search" type="text" placeholder="Search movie title">

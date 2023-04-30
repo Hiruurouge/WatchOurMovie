@@ -3,27 +3,27 @@
     <h1>Sign Up</h1>
     <form (ngSubmit)="onRegister()" ngForm="#signup">
       <label>First Name:</label>
-      <input [ngModel]="firstName">
+      <input name="firstName" [(ngModel)]="firstName">
       <label>Last Name:</label>
-      <input [ngModel]="lastName">
+      <input name="lastName" [(ngModel)]="lastName">
       <div>
         <div>
           <label for="man" >Man</label>
-          <input [ngModel]="genre" id="man" name="gender" value="H" type="radio">
+          <input  [(ngModel)]="genre" id="man" name="gender" value="H" type="radio">
         </div>
         <div>
           <label for="woman" >Woman</label>
-          <input [ngModel]="genre" id="woman" name="gender" value="F" type="radio">
+          <input [(ngModel)]="genre" id="woman" name="gender" value="F" type="radio">
         </div>
         <div>
           <label for="other" >Other</label>
-          <input [ngModel]="genre" id="other" name="gender" value="O" type="radio">
+          <input [(ngModel)]="genre" id="other" name="gender" value="O" type="radio">
         </div>
       </div>
       <label>Email:</label>
-      <input [ngModel]="email" type="email">
+      <input name="email" [(ngModel)]="email" type="email">
       <label>Password:</label>
-      <input [ngModel]="password" type="password">
+      <input name="password" [(ngModel)]="password" type="password">
       <label>Confirm password:</label>
       <input type="password">
       <button type="submit" class="standard-button">Sign Up</button>

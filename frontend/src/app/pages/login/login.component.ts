@@ -41,7 +41,7 @@ export class LoginComponent {
           const tokenType = response.token_type;
           this.userService.setToken({ accessToken, tokenType });
           this.router.navigate(['like'])
-          
+
         },
         error: (error) => {
           console.error(error);
@@ -72,7 +72,7 @@ export class LoginComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
-          this.router.navigate(['login'])
+          this.router.navigate(['/'])
         },
         (error) => {
           console.error(error);

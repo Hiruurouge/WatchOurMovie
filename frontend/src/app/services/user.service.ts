@@ -49,12 +49,11 @@ export class UserService {
   }
 
   deleteUser(): Observable<any> {
-    const user = { uid: this.token };
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     });
-    return this.http.delete<any>(this.apiUrl, { headers, body: user });
+    return this.http.delete(this.apiUrl,{headers})
   }
   getUserByMail(mail:string): Observable<any>{
     const headers = new HttpHeaders({

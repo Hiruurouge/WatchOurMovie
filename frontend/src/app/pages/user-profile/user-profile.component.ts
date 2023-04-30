@@ -97,7 +97,9 @@ export class UserProfileComponent implements  OnInit{
     this.userService.updateUser(this.user).subscribe();
   }
   deleteUser(){
-    this.userService.deleteUser()
-    this.router.navigateByUrl("/login")
+    this.userService.deleteUser().subscribe((res)=>{
+      console.log("bien ouej"+res)
+      this.router.navigateByUrl("/")
+    })
   }
 }

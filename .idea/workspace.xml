@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a11b9ce7-f683-4384-ad82-ccb136c1883f" name="Changes" comment="" />
+    <list default="true" id="a11b9ce7-f683-4384-ad82-ccb136c1883f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/movielist/movielist.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/movielist/movielist.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/pages/user-profile/user-profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/pages/user-profile/user-profile.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/user.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,9 +24,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/dilvyanais/Documents/ICC/Archi-microservice/WatchOurMovie",
+    "last_opened_file_path": "D:/archi2/WatchOurMovie/frontend",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -35,6 +41,7 @@
       <option name="presentableId" value="Default" />
       <updated>1682349869886</updated>
       <workItem from="1682349870941" duration="19000" />
+      <workItem from="1682853957353" duration="21000" />
     </task>
     <servers />
   </component>
